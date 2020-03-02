@@ -234,7 +234,7 @@ task preprocessing {
   }
 
   command <<<
-    samtools view -bS ~{samFile} | samtools sort - "~{basename}.sorted.bam"
+    samtools view -bS ~{samFile} | samtools sort -o "~{basename}.sorted.bam"
     java -jar ${PICARD_ROOT}/picard.jar MarkDuplicates \
       I="~{basename}.sorted.bam" \
       O="~{basename}.sorted.dedup.bam" \
@@ -287,18 +287,18 @@ task alignmentMetrics {
 
   command <<< 
     java -jar ${PICARDROOT}/picard.jar CollectMultipleMetrics \
-      R="$~{referenceGenome}"\
+      R="$~{referenceGenome}.fa"\
       I=~{dedupBam} \
       O="~{basename}" \
       VALIDATION_STRINGENCY=SILENT
     java -jar ${PICARDROOT}/picard.jar CollectGcBiasMetrics \
-      R="~${referenceGenome}" \
+      R="~${referenceGenome}.fa" \
       I=~{dedupBam} \
       O="~{basename}.gc_bias_metrics.txt" \
       S="~{basename}.summary_gc_bias_metrics.txt" \
       CHART="~{basename}.gc_bias_metrics.pdf"
     samtools view ~{dedupBam} | cut -f 3 | sort | uniq -c | sort -nr | sed -e 's/^ *//;s/ /\t/' | awk 'OFS="\t" {print $2,$1}' | sort -n -k1,1 > thalia.counts
-    total=$(samtools ~{dedupBam} | wc -l)
+    total=$(samtools view ~{dedupBam} | wc -l)
     unmap=$(cat thalia.counts | grep "^\*" | cut -f2); if [[ -z $unmap ]]; then unmap="0"; fi
     methyl=$(cat thalia.counts | grep F19K16 | cut -f2); if [[ -z $methyl ]]; then methyl="0"; fi
     unmeth=$(cat thalia.counts | grep F24B22 | cut -f2); if [[ -z $unmeth ]]; then unmeth="0"; fi
@@ -374,7 +374,7 @@ task extractMedipsCounts {
         --basedir . \
         --bamfile ~{dedupBam} \
         --samplename ~{basename} \
-        --ws  \
+        --ws  ~{window}\
         --outdir .
       count0=$(awk '$1 == 0' genome_count.txt | wc -l)
       count1=$(awk '$1 >= 1' genome_count.txt | wc -l)
@@ -384,8 +384,7 @@ task extractMedipsCounts {
       echo -e "sample\tcount0\tcount1\tcount10\tcount50\tcount100" > coverage_windows.txt
       echo -e "$NAME\t$count0\t$count1\t$count10\t$count50\t$count100" >> coverage_windows.txt
       echo -e "samples\n~{basename}" > name.txt
-      convert2bed -d --input wig < medips.wig > medips.bed
-      echo -e "samples\n$EXTT" > name.txt
+      bedops convert2bed -d --input wig < medips.wig > medips.bed
 
   >>>
   runtime {
