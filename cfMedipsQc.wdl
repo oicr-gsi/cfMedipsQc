@@ -85,6 +85,10 @@ workflow cfMedipsQc {
       {
       name: "bedops/2.4.37",
       url: "https://github.com/bedops/bedops"
+      },
+      {
+      name: "bc/2.1.3",
+      url: "https://github.com/gavinhoward/bc/"
       }
     ]   
     output_meta: {
@@ -273,7 +277,7 @@ task alignmentMetrics {
     Int threads = 8
     Int jobMemory = 16
     Int timeout = 6  
-    String modules = "samtools/1.9 picard/2.21.2 hg19-thaliana/3.0"
+    String modules = "samtools/1.9 picard/2.21.2 hg19-thaliana/3.0 bc/2.1.3"
   } 
  parameter_meta {
     dedupBam: "De-Duplicated Bam file"
