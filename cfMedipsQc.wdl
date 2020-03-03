@@ -296,7 +296,7 @@ task alignmentMetrics {
       O="~{basename}" \
       VALIDATION_STRINGENCY=SILENT
     java -jar ${PICARDROOT}/picard.jar CollectGcBiasMetrics \
-      R="~${referenceGenome}.fa" \
+      R="$~{referenceGenome}.fa" \
       I=~{dedupBam} \
       O="~{basename}.gc_bias_metrics.txt" \
       S="~{basename}.summary_gc_bias_metrics.txt" \
@@ -388,7 +388,7 @@ task extractMedipsCounts {
       echo -e "sample\tcount0\tcount1\tcount10\tcount50\tcount100" > coverage_windows.txt
       echo -e "$NAME\t$count0\t$count1\t$count10\t$count50\t$count100" >> coverage_windows.txt
       echo -e "samples\n~{basename}" > name.txt
-      bedops convert2bed -d --input wig < medips.wig > medips.bed
+      $BEDOPS_ROOT/convert2bed -d --input wig < medips.wig > medips.bed
 
   >>>
   runtime {
