@@ -76,7 +76,7 @@ workflow cfMedipsQc {
       url: "https://www.python.org/"
       },
       {
-      name: "cfmedips-lib/1.5"
+      name: "cfmedips/1.5"
       },
       {
       name: "trimmomatic/0.39",
@@ -89,6 +89,9 @@ workflow cfMedipsQc {
       {
       name: "bc/2.1.3",
       url: "https://github.com/gavinhoward/bc/"
+      },
+      {
+      name: "hg19-thaliana/1.0"
       }
     ]   
     output_meta: {
@@ -182,7 +185,7 @@ task alignment {
     Int threads = 8
     Int jobMemory = 16
     Int timeout = 6  
-    String modules = "bowtie2/2.1.0 hg19-thaliana/3.0"
+    String modules = "bowtie2/2.1.0 hg19-thaliana/1.0"
   } 
   parameter_meta {
     fastq1Paired: "First fastq input file containing reads"
@@ -277,7 +280,7 @@ task alignmentMetrics {
     Int threads = 8
     Int jobMemory = 16
     Int timeout = 6  
-    String modules = "samtools/1.9 picard/2.21.2 hg19-thaliana/3.0 bc/2.1.3"
+    String modules = "samtools/1.9 picard/2.21.2 hg19-thaliana/1.0 bc/2.1.3"
   } 
  parameter_meta {
     dedupBam: "De-Duplicated Bam file"
