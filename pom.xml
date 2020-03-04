@@ -6,17 +6,16 @@
     <parent>
         <groupId>ca.on.oicr.gsi</groupId>
         <artifactId>pipedev-niassa-cromwell-parent</artifactId>
-        <version>2.5.12</version>
+        <version>2.5.9</version>
         <relativePath/>
     </parent>
 
     <artifactId>cfMedipsQc</artifactId>
-    <version>1.0</version>
+    <version>1.0.0</version>
 
     <properties>
-        <workflow-description>medips workflow</workflow-description>
+        <workflow-description>Workflow to run cfmedips TGL script</workflow-description>
         <wdl-workflow>cfMedipsQc.wdl</wdl-workflow>
-        <test-definition>tests.json</test-definition>
     </properties>
 
 </project>
