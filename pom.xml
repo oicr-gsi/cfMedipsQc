@@ -11,11 +11,12 @@
     </parent>
 
     <artifactId>cfMedipsQc</artifactId>
-    <version>1.0.0</version>
+    <version>1.0</version>
 
     <properties>
-        <workflow-description>Workflow to run cfmedips TGL script</workflow-description>
+        <workflow-description>Running the medips pipeline</workflow-description>
         <wdl-workflow>cfMedipsQc.wdl</wdl-workflow>
+        <test-definition>tests.json</test-definition>
     </properties>
 
 </project>
