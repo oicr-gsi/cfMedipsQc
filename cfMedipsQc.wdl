@@ -361,7 +361,7 @@ task extractMedipsCounts {
     Int threads = 8
     Int jobMemory = 16
     Int timeout = 6  
-    String modules = "rstats/3.5 cfmedips-lib/1.5 bedops/2.4.37"
+    String modules = "rstats/3.5 cfmedips/1.5 bedops/2.4.37"
   }
   parameter_meta {
     dedupBam: "Dedup bam file"
