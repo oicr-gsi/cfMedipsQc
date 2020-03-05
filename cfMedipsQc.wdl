@@ -328,7 +328,7 @@ task alignmentMetrics {
     File insertSizeMetrics = "~{basename}.insert_size_metrics"
     File qualityByCycleMetrics = "~{basename}.quality_by_cycle_metrics"
     File qualityDistributionMetrics = "~{basename}.quality_distribution_metrics"
-    File gcBiasMetrics = "~{basename}.gc_bias_mertics.txt"
+    File gcBiasMetrics = "~{basename}.gc_bias_metrics.txt"
     File summaryGcBiasMetrics = "~{basename}.summary_gc_bias_metrics.txt"
     File thaliaSummary = "thalia_summary.txt"
 
