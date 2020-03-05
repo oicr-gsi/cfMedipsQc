@@ -293,12 +293,12 @@ task alignmentMetrics {
   }
 
   command <<< 
-    java -jar ${PICARDROOT}/picard.jar CollectMultipleMetrics \
+    java -jar ${PICARD_ROOT}/picard.jar CollectMultipleMetrics \
       R="$~{referenceGenome}.fa"\
       I=~{dedupBam} \
       O="~{basename}" \
       VALIDATION_STRINGENCY=SILENT
-    java -jar ${PICARDROOT}/picard.jar CollectGcBiasMetrics \
+    java -jar ${PICARD_ROOT}/picard.jar CollectGcBiasMetrics \
       R="$~{referenceGenome}.fa" \
       I=~{dedupBam} \
       O="~{basename}.gc_bias_metrics.txt" \
