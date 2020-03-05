@@ -439,7 +439,7 @@ task finalMetrics {
     Int threads = 8
     Int jobMemory = 16
     Int timeout = 6
-    String modules = "python/3.6 cfmedips/1.5"
+    String modules = "cfmedips/1.5"
   }
   parameter_meta {
     dedupBam: "Dedup bam file"
