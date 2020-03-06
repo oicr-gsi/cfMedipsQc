@@ -95,7 +95,7 @@ workflow cfMedipsQc {
       }
     ]   
     output_meta: {
-       outputAlignmentSummaryMetrics: "Metrics for alignment",
+       outputAlignmentSummaryMetrics: "Metrics for alignments",
        outputBaseDistributionMetrics: "Metrics for base distribution",
        outputInsertSizeMetrics: "Metrics for insert size",
        outputQualityByCycleMetrics: "Quality by cycle metrics",
