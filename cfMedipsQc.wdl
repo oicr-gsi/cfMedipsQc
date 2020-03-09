@@ -4,6 +4,7 @@ workflow cfMedipsQc {
       File fastq1
       File fastq2
       Int window = 300
+      String referenceModule = "hg19-thaliana/1.0"
       String referenceGenome = "{HG19_THALIANA_ROOT}/hg19_thaliana_random"
   }
   
@@ -15,6 +16,7 @@ workflow cfMedipsQc {
   call alignment {
     input: fastq1Paired = trimming.outputFastq1Paired,
            fastq2Paired = trimming.outputFastq2Paired,
+           referenceModule = referenceModule,
            referenceGenome = referenceGenome
   }
 
@@ -24,6 +26,7 @@ workflow cfMedipsQc {
 
   call alignmentMetrics {
     input: dedupBam = preprocessing.dedupBam,
+           referenceModule = referenceModule,
            referenceGenome = referenceGenome
   }
 
@@ -181,11 +184,12 @@ task alignment {
     File fastq1Paired
     File fastq2Paired
     String basename = basename("~{fastq1Paired}", ".R1_paired.fastq.gz")
-    String referenceGenome
+    String referenceModule = "hg19-thaliana/1.0"
+    String referenceGenome = "HG19_THALIANA_ROOT/hg19_thaliana_random"
     Int threads = 8
     Int jobMemory = 16
     Int timeout = 6  
-    String modules = "bowtie2/2.1.0 hg19-thaliana/1.0"
+    String modules = "bowtie2/2.1.0 ~{referenceModule}"
   } 
   parameter_meta {
     fastq1Paired: "First fastq input file containing reads"
@@ -276,11 +280,12 @@ task alignmentMetrics {
   input {
     File dedupBam
     String basename =basename("~{dedupBam}", ".sorted.dedup.bam")
-    String referenceGenome
+    String referenceModule = "hg19-thaliana/1.0"
+    String referenceGenome = "HG19_THALIANA_ROOT/hg19_thaliana_random"
     Int threads = 8
     Int jobMemory = 16
     Int timeout = 6  
-    String modules = "samtools/1.9 picard/2.21.2 hg19-thaliana/1.0 bc/2.1.3 rstats/3.5"
+    String modules = "samtools/1.9 picard/2.21.2 ~{referenceModule} bc/2.1.3 rstats/3.5"
   } 
  parameter_meta {
     dedupBam: "De-Duplicated Bam file"
@@ -293,6 +298,7 @@ task alignmentMetrics {
   }
 
   command <<< 
+    set -euo pipefail
     java -jar ${PICARD_ROOT}/picard.jar CollectMultipleMetrics \
       R="$~{referenceGenome}.fa"\
       I=~{dedupBam} \
