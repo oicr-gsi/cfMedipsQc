@@ -16,8 +16,8 @@
   "id": "cfMedipsQc_dataset1",
   "parameters": {
     "wdl_inputs": {
-        "cfMedipsQc.fastq2": "/.mounts/labs/gsiprojects/gsi/workflow-dev/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001.R2.fastq.gz",
-        "cfMedipsQc.fastq1": "/.mounts/labs/gsiprojects/gsi/workflow-dev/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001.R1.fastq.gz"
+        "cfMedipsQc.fastq2": "/.mounts/labs/gsiprojects/gsi/workflow-dev/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R2_001.fastq.gz",
+        "cfMedipsQc.fastq1": "/.mounts/labs/gsiprojects/gsi/workflow-dev/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R1_001.fastq.gz"
     }
   }
 }
