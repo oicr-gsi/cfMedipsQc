@@ -305,7 +305,7 @@ task alignmentMetrics {
       O="~{basename}" \
       VALIDATION_STRINGENCY=SILENT
     java -jar ${PICARD_ROOT}/picard.jar CollectGcBiasMetrics \
-      R="$~{referenceGenome}.fa" \
+      R="~{referenceGenome}.fa" \
       I=~{dedupBam} \
       O="~{basename}.gc_bias_metrics.txt" \
       S="~{basename}.summary_gc_bias_metrics.txt" \
