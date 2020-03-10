@@ -5,7 +5,6 @@ workflow cfMedipsQc {
       File fastq2
       Int window = 300
       String referenceModule = "hg19-thaliana/1.0"
-      String referenceGenome = "${HG19_THALIANA_ROOT}/hg19_thaliana_random"
   }
   
   call trimming {
@@ -16,8 +15,7 @@ workflow cfMedipsQc {
   call alignment {
     input: fastq1Paired = trimming.outputFastq1Paired,
            fastq2Paired = trimming.outputFastq2Paired,
-           referenceModule = referenceModule,
-           referenceGenome = referenceGenome
+           referenceModule = referenceModule
   }
 
   call preprocessing {
@@ -26,8 +24,7 @@ workflow cfMedipsQc {
 
   call alignmentMetrics {
     input: dedupBam = preprocessing.dedupBam,
-           referenceModule = referenceModule,
-           referenceGenome = referenceGenome
+           referenceModule = referenceModule
   }
 
   call extractMedipsCounts {
