@@ -390,6 +390,7 @@ task extractMedipsCounts {
         --samplename ~{basename} \
         --ws  ~{window}\
         --outdir .
+      NAME=""
       count0=$(awk '$1 == 0' genome_count.txt | wc -l)
       count1=$(awk '$1 >= 1' genome_count.txt | wc -l)
       count10=$(awk '$1 >= 10' genome_count.txt | wc -l)
