@@ -129,7 +129,7 @@ task trimming {
     File fastq1
     File fastq2
     String fastq1Basename =basename("~{fastq1}", "_R1_001.fastq.gz")
-    String fastq2Basename =basename("~{fastq2}", "_R1_002.fastq.gz")
+    String fastq2Basename =basename("~{fastq2}", "_R2_001.fastq.gz")
     Int headCrop = 5
     Int threads = 6
     Int jobMemory = 16
