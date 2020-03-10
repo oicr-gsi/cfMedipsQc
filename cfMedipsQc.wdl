@@ -5,7 +5,7 @@ workflow cfMedipsQc {
       File fastq2
       Int window = 300
       String referenceModule = "hg19-thaliana/1.0"
-      String referenceGenome = "{HG19_THALIANA_ROOT}/hg19_thaliana_random"
+      String referenceGenome = "${HG19_THALIANA_ROOT}/hg19_thaliana_random"
   }
   
   call trimming {
@@ -149,6 +149,7 @@ task trimming {
     timeout: "Number of hours before task timeout"
   }
   command <<<
+    set -euo pipefail
     trimmomatic PE \
                 ~{fastq1} ~{fastq2} \
                 "~{fastq1Basename}.R1_paired.fastq.gz" "~{fastq1Basename}.R1_unpaired.fastq.gz" "~{fastq2Basename}.R2_paired.fastq.gz" "~{fastq2Basename}.R2_unpaired.fastq.gz" \
@@ -185,7 +186,7 @@ task alignment {
     File fastq2Paired
     String basename = basename("~{fastq1Paired}", ".R1_paired.fastq.gz")
     String referenceModule = "hg19-thaliana/1.0"
-    String referenceGenome = "HG19_THALIANA_ROOT/hg19_thaliana_random"
+    String referenceGenome = "$HG19_THALIANA_ROOT/hg19_thaliana_random"
     Int threads = 8
     Int jobMemory = 16
     Int timeout = 6  
@@ -202,7 +203,8 @@ task alignment {
     timeout: "Number of hours before task timeout"
   }
   command <<<
-    bowtie2 -p 8 -x "$~{referenceGenome}" \
+    set -euo pipefail
+    bowtie2 -p 8 -x "~{referenceGenome}" \
             -1 ~{fastq1Paired} \
             -2 ~{fastq2Paired} \
             -S "~{basename}.sam"
@@ -245,6 +247,7 @@ task preprocessing {
   }
 
   command <<<
+    set -euo pipefail
     samtools view -bS ~{samFile} | samtools sort -o "~{basename}.sorted.bam"
     java -jar ${PICARD_ROOT}/picard.jar MarkDuplicates \
       I="~{basename}.sorted.bam" \
@@ -281,7 +284,7 @@ task alignmentMetrics {
     File dedupBam
     String basename =basename("~{dedupBam}", ".sorted.dedup.bam")
     String referenceModule = "hg19-thaliana/1.0"
-    String referenceGenome = "HG19_THALIANA_ROOT/hg19_thaliana_random"
+    String referenceGenome = "$HG19_THALIANA_ROOT/hg19_thaliana_random"
     Int threads = 8
     Int jobMemory = 16
     Int timeout = 6  
@@ -300,7 +303,7 @@ task alignmentMetrics {
   command <<< 
     set -euo pipefail
     java -jar ${PICARD_ROOT}/picard.jar CollectMultipleMetrics \
-      R="$~{referenceGenome}.fa"\
+      R="~{referenceGenome}.fa"\
       I=~{dedupBam} \
       O="~{basename}" \
       VALIDATION_STRINGENCY=SILENT
@@ -383,6 +386,7 @@ task extractMedipsCounts {
 
   }
   command <<<
+    set -euo pipefail
       medips.R \
         --basedir . \
         --bamfile ~{dedupBam} \
@@ -464,6 +468,7 @@ task finalMetrics {
     timeout: "Number of hours before task timeout"
   }  
   command <<<
+    set -euo pipefail
     txt-to-json.py -n ~{nameFile} -e ~{enrichmentData} -c ~{coverageCounts} -w ~{coverageWindows} -s ~{saturationMetrics} -d ~{metricsDedup} -u ~{summaryGcBiasMetrics} -a ~{alignmentSummaryMetrics} -t ~{thaliaSummary}
   >>>
   runtime {
