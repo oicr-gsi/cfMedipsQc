@@ -30,15 +30,15 @@ java -jar cromwell.jar run cfMedipsQc.wdl --inputs inputs.json
 #### Required workflow parameters:
 Parameter|Value|Description
 ---|---|---
-`fastq1`|File|
-`fastq2`|File|
+`fastq1`|File|First read fastq
+`fastq2`|File|Second read fastq
 
 
 #### Optional workflow parameters:
 Parameter|Value|Default|Description
 ---|---|---|---
-`window`|Int|300|
-`referenceModule`|String|"hg19-thaliana/1.0"|
+`window`|Int|300|Size of window
+`referenceModule`|String|"hg19-thaliana/1.0"|Hg19/Hg38 that is to be used with the added thaliana chromosome
 
 
 #### Optional task parameters:
