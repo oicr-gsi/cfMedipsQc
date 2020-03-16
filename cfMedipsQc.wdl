@@ -283,7 +283,7 @@ task alignmentMetrics {
     String referenceModule = "hg19-thaliana/1.0"
     String referenceGenome = "$HG19_THALIANA_ROOT/hg19_thaliana_random"
     Int threads = 8
-    Int jobMemory = 16
+    Int jobMemory = 32
     Int timeout = 6  
     String modules = "samtools/1.9 picard/2.21.2 ~{referenceModule} bc/2.1.3 rstats/3.5"
   } 
@@ -365,7 +365,7 @@ task extractMedipsCounts {
     Int window
     String basename =basename("~{dedupBam}", ".sorted.dedup.bam")
     Int threads = 8
-    Int jobMemory = 16
+    Int jobMemory = 32
     Int timeout = 6  
     String modules = "rstats/3.5 cfmedips/1.5 bedops/2.4.37"
   }
