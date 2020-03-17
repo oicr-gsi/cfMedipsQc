@@ -364,6 +364,7 @@ task extractMedipsCounts {
     File thaliaSummary
     Int window
     String basename =basename("~{dedupBam}", ".sorted.dedup.bam")
+    String convert2bed = "$BEDOPS_ROOT/convert2bed"
     Int threads = 8
     Int jobMemory = 32
     Int timeout = 6  
@@ -399,7 +400,7 @@ task extractMedipsCounts {
       echo -e "sample\tcount0\tcount1\tcount10\tcount50\tcount100" > coverage_windows.txt
       echo -e "$NAME\t$count0\t$count1\t$count10\t$count50\t$count100" >> coverage_windows.txt
       echo -e "samples\n~{basename}" > name.txt
-      $BEDOPS_ROOT/convert2bed -d --input wig < medips.wig > medips.bed
+      ~{convert2bed} -d --input wig < medips.wig > medips.bed
 
   >>>
   runtime {
@@ -467,7 +468,15 @@ task finalMetrics {
   }  
   command <<<
     set -euo pipefail
-    txt-to-json.py -n ~{nameFile} -e ~{enrichmentData} -c ~{coverageCounts} -w ~{coverageWindows} -s ~{saturationMetrics} -d ~{metricsDedup} -u ~{summaryGcBiasMetrics} -a ~{alignmentSummaryMetrics} -t ~{thaliaSummary}
+    txt-to-json.py -n ~{nameFile} \
+                   -e ~{enrichmentData} \
+                   -c ~{coverageCounts} \
+                   -w ~{coverageWindows} \
+                   -s ~{saturationMetrics} \
+                   -d ~{metricsDedup} \
+                   -u ~{summaryGcBiasMetrics} \
+                   -a ~{alignmentSummaryMetrics} \
+                   -t ~{thaliaSummary}
   >>>
   runtime {
   modules: "~{modules}"
