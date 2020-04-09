@@ -22,6 +22,17 @@
           "cfMedipsQc.referenceModule": "hg19-thaliana/1.0"
         }
       }
+    },
+    {
+      "id": "cfMedipsQc_setsize",
+      "parameters": {
+        "wdl_inputs": {
+          "cfMedipsQc.fastq1": "/.mounts/labs/gsiprojects/gsi/workflow-dev/SWID_15919826_AIX_0010_Ct_T_PE_160102_CM_AWA4285_7_200121_M00146_0152_000000000-D7Y75_ACTCTCGA-TGGTACAG_L001_R1_001.fastq.gz",
+          "cfMedipsQc.fastq2": "/.mounts/labs/gsiprojects/gsi/workflow-dev/SWID_15919826_AIX_0010_Ct_T_PE_160102_CM_AWA4285_7_200121_M00146_0152_000000000-D7Y75_ACTCTCGA-TGGTACAG_L001_R2_001.fastq.gz",
+          "cfMedipsQc.referenceGenome": "$HG19_THALIANA_ROOT/hg19_thaliana_random.fa",
+          "cfMedipsQc.referenceModule": "hg19-thaliana/1.0"
+        }
+      }
     }
   ]
 }
