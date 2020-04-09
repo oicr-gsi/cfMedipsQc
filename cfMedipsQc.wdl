@@ -4,7 +4,8 @@ workflow cfMedipsQc {
       File fastq1
       File fastq2
       Int window = 300
-      String referenceModule = "hg19-thaliana/1.0"
+      String referenceGenome
+      String referenceModule
   }
   
   call trimming {
@@ -15,6 +16,7 @@ workflow cfMedipsQc {
   call alignment {
     input: fastq1Paired = trimming.outputFastq1Paired,
            fastq2Paired = trimming.outputFastq2Paired,
+           referenceGenome = referenceGenome,
            referenceModule = referenceModule
   }
 
@@ -24,6 +26,7 @@ workflow cfMedipsQc {
 
   call alignmentMetrics {
     input: dedupBam = preprocessing.dedupBam,
+           referenceGenome = referenceGenome,
            referenceModule = referenceModule
   }
 
@@ -76,7 +79,8 @@ workflow cfMedipsQc {
       url: "https://www.python.org/"
       },
       {
-      name: "cfmedips/1.5"
+      name: "cfmedips/1.5",
+      url: "https://github.com/oicr-gsi/medips-tools.git"
       },
       {
       name: "trimmomatic/0.39",
@@ -89,9 +93,6 @@ workflow cfMedipsQc {
       {
       name: "bc/2.1.3",
       url: "https://github.com/gavinhoward/bc/"
-      },
-      {
-      name: "hg19-thaliana/1.0"
       }
     ]   
     output_meta: {
@@ -182,8 +183,8 @@ task alignment {
     File fastq1Paired
     File fastq2Paired
     String basename = basename("~{fastq1Paired}", ".R1_paired.fastq.gz")
-    String referenceModule = "hg19-thaliana/1.0"
-    String referenceGenome = "$HG19_THALIANA_ROOT/hg19_thaliana_random"
+    String referenceModule
+    String referenceGenome
     Int threads = 8
     Int jobMemory = 16
     Int timeout = 6  
@@ -201,7 +202,7 @@ task alignment {
   }
   command <<<
     set -euo pipefail
-    bowtie2 -p 8 -x "~{referenceGenome}" \
+    bowtie2 -p 8 -x "~{sub(referenceGenome, "\.fa(sta)?$", "")}" \
             -1 ~{fastq1Paired} \
             -2 ~{fastq2Paired} \
             -S "~{basename}.sam"
@@ -280,8 +281,8 @@ task alignmentMetrics {
   input {
     File dedupBam
     String basename =basename("~{dedupBam}", ".sorted.dedup.bam")
-    String referenceModule = "hg19-thaliana/1.0"
-    String referenceGenome = "$HG19_THALIANA_ROOT/hg19_thaliana_random"
+    String referenceModule
+    String referenceGenome
     Int threads = 8
     Int jobMemory = 32
     Int timeout = 6  
@@ -300,12 +301,12 @@ task alignmentMetrics {
   command <<< 
     set -euo pipefail
     java -jar ${PICARD_ROOT}/picard.jar CollectMultipleMetrics \
-      R="~{referenceGenome}.fa"\
+      R="~{referenceGenome}"\
       I=~{dedupBam} \
       O="~{basename}" \
       VALIDATION_STRINGENCY=SILENT
     java -jar ${PICARD_ROOT}/picard.jar CollectGcBiasMetrics \
-      R="~{referenceGenome}.fa" \
+      R="~{referenceGenome}" \
       I=~{dedupBam} \
       O="~{basename}.gc_bias_metrics.txt" \
       S="~{basename}.summary_gc_bias_metrics.txt" \

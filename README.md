@@ -11,11 +11,10 @@ Medips
 * [picard 2.21.2](https://github.com/broadinstitute/picard/)
 * [rstats 3.5](https://www.r-project.org/)
 * [python 3.6](https://www.python.org/)
-* [cfmedips 1.5](https://gitlab.oicr.on.ca/ResearchIT/modulator)
+* [cfmedips 1.5](https://github.com/oicr-gsi/medips-tools.git)
 * [trimmomatic 0.39](https://github.com/timflutre/trimmomatic)
 * [bedops 2.4.37](https://github.com/bedops/bedops)
 * [bc 2.1.3](https://github.com/gavinhoward/bc/)
-* [hg19-thaliana 1.0](https://gitlab.oicr.on.ca/ResearchIT/modulator)
 
 
 ## Usage
@@ -30,15 +29,16 @@ java -jar cromwell.jar run cfMedipsQc.wdl --inputs inputs.json
 #### Required workflow parameters:
 Parameter|Value|Description
 ---|---|---
-`fastq1`|File|First read fastq
-`fastq2`|File|Second read fastq
+`fastq1`|File|
+`fastq2`|File|
+`referenceGenome`|String|
+`referenceModule`|String|
 
 
 #### Optional workflow parameters:
 Parameter|Value|Default|Description
 ---|---|---|---
-`window`|Int|300|Size of window
-`referenceModule`|String|"hg19-thaliana/1.0"|Hg19/Hg38 that is to be used with the added thaliana chromosome
+`window`|Int|300|
 
 
 #### Optional task parameters:
@@ -52,7 +52,6 @@ Parameter|Value|Default|Description
 `trimming.timeout`|Int|6|Number of hours before task timeout
 `trimming.modules`|String|"trimmomatic/0.39"|Module needed to run trimmomatic extract
 `alignment.basename`|String|basename("~{fastq1Paired}",".R1_paired.fastq.gz")|Name to make output sam file
-`alignment.referenceGenome`|String|"$HG19_THALIANA_ROOT/hg19_thaliana_random"|Using either HG19 or HG38 both with added chromosomes
 `alignment.threads`|Int|8|Requested CPU threads
 `alignment.jobMemory`|Int|16|Memory (GB) allocated for this job
 `alignment.timeout`|Int|6|Number of hours before task timeout
@@ -63,14 +62,14 @@ Parameter|Value|Default|Description
 `preprocessing.timeout`|Int|6|Number of hours before task timeout
 `preprocessing.modules`|String|"samtools/1.9 picard/2.21.2"|Module needed to run preprocessing
 `alignmentMetrics.basename`|String|basename("~{dedupBam}",".sorted.dedup.bam")|Name to make output files
-`alignmentMetrics.referenceGenome`|String|"$HG19_THALIANA_ROOT/hg19_thaliana_random"|Using either HG19 or HG38 both with added chromosomes
 `alignmentMetrics.threads`|Int|8|Requested CPU threads
-`alignmentMetrics.jobMemory`|Int|16|Memory (GB) allocated for this job
+`alignmentMetrics.jobMemory`|Int|32|Memory (GB) allocated for this job
 `alignmentMetrics.timeout`|Int|6|Number of hours before task timeout
 `alignmentMetrics.modules`|String|"samtools/1.9 picard/2.21.2 ~{referenceModule} bc/2.1.3 rstats/3.5"|Modules needed to run alignment metrics
 `extractMedipsCounts.basename`|String|basename("~{dedupBam}",".sorted.dedup.bam")|
+`extractMedipsCounts.convert2bed`|String|"$BEDOPS_ROOT/convert2bed"|
 `extractMedipsCounts.threads`|Int|8|Requested CPU threads
-`extractMedipsCounts.jobMemory`|Int|16|Memory (GB) allocated for this job
+`extractMedipsCounts.jobMemory`|Int|32|Memory (GB) allocated for this job
 `extractMedipsCounts.timeout`|Int|6|Number of hours before task timeout
 `extractMedipsCounts.modules`|String|"rstats/3.5 cfmedips/1.5 bedops/2.4.37"|Modules needed to run alignment metrics
 `finalMetrics.threads`|Int|8|Requested CPU threads
@@ -83,7 +82,7 @@ Parameter|Value|Default|Description
 
 Output | Type | Description
 ---|---|---
-`outputAlignmentSummaryMetrics`|File|Metrics for alignments
+`outputAlignmentSummaryMetrics`|File|Metric for alignments
 `outputBaseDistributionMetrics`|File|Metrics for base distributions
 `outputInsertSizeMetrics`|File|Metrics for insert size
 `outputQualityByCycleMetrics`|File|Quality by cycle metrics

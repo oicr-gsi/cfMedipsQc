@@ -6,20 +6,22 @@
     "output_metrics_dir": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/output_metrics",
     "parameters": {
       "wdl_options": {
-        "write_to_cache": false,
-        "read_from_cache": false
+        "read_from_cache": false,
+        "write_to_cache": false
       }
     }
   },
   "tests": [
-      {
-  "id": "cfMedipsQc_dataset1",
-  "parameters": {
-    "wdl_inputs": {
-        "cfMedipsQc.fastq2": "/.mounts/labs/gsiprojects/gsi/workflow-dev/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R2_001.fastq.gz",
-        "cfMedipsQc.fastq1": "/.mounts/labs/gsiprojects/gsi/workflow-dev/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R1_001.fastq.gz"
+    {
+      "id": "cfMedipsQc_dataset1",
+      "parameters": {
+        "wdl_inputs": {
+          "cfMedipsQc.fastq1": "/.mounts/labs/gsiprojects/gsi/workflow-dev/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R1_001.fastq.gz",
+          "cfMedipsQc.fastq2": "/.mounts/labs/gsiprojects/gsi/workflow-dev/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R2_001.fastq.gz",
+          "cfMedipsQc.referenceGenome": "$HG19_THALIANA_ROOT/hg19_thaliana_random.fa",
+          "cfMedipsQc.referenceModule": "hg19-thaliana/1.0"
+        }
+      }
     }
-  }
-}
-  ]    
+  ]
 }
