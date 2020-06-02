@@ -164,7 +164,7 @@ task trimming {
   output {
     File outputFastq1Paired = "~{fastq1Basename}.R1_paired.fastq.gz"
     File outputFastq1Unpaired = "~{fastq1Basename}.R1_unpaired.fastq.gz"
-    File outputFastq2Paired = "~{fastq1Basename}.R2_paired.fastq.gz"
+    File outputFastq2Paired = "~{fastq2Basename}.R2_paired.fastq.gz"
     File outputFastq2Unpaired = "~{fastq2Basename}.R2_unpaired.fastq.gz"
   }
 
