@@ -29,16 +29,16 @@ java -jar cromwell.jar run cfMedipsQc.wdl --inputs inputs.json
 #### Required workflow parameters:
 Parameter|Value|Description
 ---|---|---
-`fastq1`|File|
-`fastq2`|File|
-`referenceGenome`|String|
-`referenceModule`|String|
+`fastq1`|File|Read 1 input fastq file
+`fastq2`|File|Read 2 input fastq file
+`referenceGenome`|String|reference genome to use
+`referenceModule`|String|module to load the reference genome
 
 
 #### Optional workflow parameters:
 Parameter|Value|Default|Description
 ---|---|---|---
-`window`|Int|300|
+`window`|Int|300|window length, over which to assess
 
 
 #### Optional task parameters:
@@ -66,8 +66,8 @@ Parameter|Value|Default|Description
 `alignmentMetrics.jobMemory`|Int|32|Memory (GB) allocated for this job
 `alignmentMetrics.timeout`|Int|6|Number of hours before task timeout
 `alignmentMetrics.modules`|String|"samtools/1.9 picard/2.21.2 ~{referenceModule} bc/2.1.3 rstats/3.5"|Modules needed to run alignment metrics
-`extractMedipsCounts.basename`|String|basename("~{dedupBam}",".sorted.dedup.bam")|
-`extractMedipsCounts.convert2bed`|String|"$BEDOPS_ROOT/convert2bed"|
+`extractMedipsCounts.basename`|String|basename("~{dedupBam}",".sorted.dedup.bam")|basename for the sample
+`extractMedipsCounts.convert2bed`|String|"$BEDOPS_ROOT/convert2bed"|path to conver2bed program
 `extractMedipsCounts.threads`|Int|8|Requested CPU threads
 `extractMedipsCounts.jobMemory`|Int|32|Memory (GB) allocated for this job
 `extractMedipsCounts.timeout`|Int|6|Number of hours before task timeout
@@ -122,4 +122,4 @@ mvn clean verify \
 
 For support, please file an issue on the [Github project](https://github.com/oicr-gsi) or send an email to gsi@oicr.on.ca .
 
-_Generated with wdl_doc_gen (https://github.com/oicr-gsi/wdl_doc_gen/)_
+_Generated with generate-markdown-readme (https://github.com/oicr-gsi/gsi-wdl-tools/)_
