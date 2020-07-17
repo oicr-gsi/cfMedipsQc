@@ -51,6 +51,13 @@ workflow cfMedipsQc {
            nameFile = extractMedipsCounts.nameFile
   }
 
+  parameter_meta {
+    fastq1: "Read 1 input fastq file"
+    fastq2: "Read 2 input fastq file"
+    window:  "window length, over which to assess"
+    referenceGenome: "reference genome to use"
+    referenceModule: "module to load the reference genome"
+  }
 
   meta {
     author: "Rishi Shah"
@@ -316,8 +323,10 @@ task alignmentMetrics {
     unmap=$(cat thalia.counts | grep "^\*" | cut -f2); if [[ -z $unmap ]]; then unmap="0"; fi
     if [[ $(cat thalia.counts | grep F19K16 | cut -f2) == "" ]]; then methyl=0; else methyl=$(cat thalia.counts | grep F19K16 | cut -f2); fi
     if [[ $(cat thalia.counts | grep F24B22 | cut -f2) == "" ]]; then unmeth=0; else unmeth=$(cat thalia.counts | grep F24B22 | cut -f2); fi
-    pct_thalia=$(echo "scale=3; ($methyl + $unmeth)/$total * 100" | bc -l); if [[ -z $pct_thalia ]]; then pct_thalia="0"; fi
-    bet_thalia=$(echo "scale=3; $methyl/($methyl + $unmeth)" | bc -l); if [[ -z $bet_thalia ]]; then bet_thalia="0"; fi
+    if [[ $total == "" ]]; then pct_thalia=0; else pct_thalia=$(echo "scale=3; ($methyl + $unmeth)/$total * 100" | bc -l); fi
+    if [[ -z $pct_thalia ]]; then pct_thalia="0"; fi
+    if [[ $methyl == 0 && $unmeth == 0 ]]; then bet_thalia=0; else bet_thalia=$(echo "scale=3; $methyl/($methyl + $unmeth)" | bc -l); fi 
+    if [[ -z $bet_thalia ]]; then bet_thalia="0"; fi
     echo -e "total\tunmap\tmethyl\tunmeth\tPCT_THALIANA\tTHALIANA_BETA" > thalia_summary.txt
     echo -e "$total\t$unmap\t$methyl\t$unmeth\t$pct_thalia\t$bet_thalia" >> thalia_summary.txt
   >>>
@@ -378,6 +387,8 @@ task extractMedipsCounts {
     alignmentSummaryMetrics: "Alignment summary metrics"
     thaliaSummary: "Summary of the thalia data"
     window: "value of window"
+	basename: "basename for the sample"
+	convert2bed: "path to conver2bed program"
     modules: "Modules needed to run alignment metrics"
     jobMemory: "Memory (GB) allocated for this job"
     threads: "Requested CPU threads"
