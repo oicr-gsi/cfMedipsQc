@@ -51,6 +51,13 @@ workflow cfMedipsQc {
            nameFile = extractMedipsCounts.nameFile
   }
 
+  parameter_meta {
+    fastq1: "Read 1 input fastq file"
+    fastq2: "Read 2 input fastq file"
+    window:  "window length, over which to assess"
+    referenceGenome: "reference genome to use"
+    referenceModule: "module to load the reference genome"
+  }
 
   meta {
     author: "Rishi Shah"
@@ -380,6 +387,8 @@ task extractMedipsCounts {
     alignmentSummaryMetrics: "Alignment summary metrics"
     thaliaSummary: "Summary of the thalia data"
     window: "value of window"
+	basename: "basename for the sample"
+	convert2bed: "path to conver2bed program"
     modules: "Modules needed to run alignment metrics"
     jobMemory: "Memory (GB) allocated for this job"
     threads: "Requested CPU threads"
