@@ -135,6 +135,7 @@ task trimming {
     File fastq2
     String fastq1Basename =basename("~{fastq1}", "_R1_001.fastq.gz")
     String fastq2Basename =basename("~{fastq2}", "_R2_001.fastq.gz")
+	String phred = "phred33"
     Int headCrop = 5
     Int threads = 6
     Int jobMemory = 16
@@ -147,6 +148,7 @@ task trimming {
     fastq2: "Second fastq input file containing reads"
     fastq1Basename: "Basename for the first fastq"
     fastq2Basename: "Basename for the second fastq"
+	phred: "Quality encoding, default is phred33, but can be set to phred64"
     headCrop: "How many bases to crop"
     modules: "Module needed to run trimmomatic extract"
     jobMemory: "Memory (GB) allocated for this job"
@@ -157,6 +159,7 @@ task trimming {
     set -euo pipefail
     trimmomatic PE \
                 ~{fastq1} ~{fastq2} \
+				"-~{phred}" \
                 "~{fastq1Basename}.R1_paired.fastq.gz" "~{fastq1Basename}.R1_unpaired.fastq.gz" "~{fastq2Basename}.R2_paired.fastq.gz" "~{fastq2Basename}.R2_unpaired.fastq.gz" \
                 HEADCROP:~{headCrop}
   >>>
