@@ -6,11 +6,13 @@ workflow cfMedipsQc {
       Int window = 300
       String referenceGenome
       String referenceModule
+      String fastqFormat
   }
   
   call trimming {
     input: fastq1 = fastq1,
-           fastq2 = fastq2
+           fastq2 = fastq2,
+           fastqFormat = fastqFormat
   }  
 
   call alignment {
@@ -128,14 +130,13 @@ workflow cfMedipsQc {
     File outputqcMetrics = finalMetrics.qcMetrics
   }
 }
-
 task trimming {
   input {
     File fastq1
     File fastq2
     String fastq1Basename =basename("~{fastq1}", "_R1_001.fastq.gz")
     String fastq2Basename =basename("~{fastq2}", "_R2_001.fastq.gz")
-	String phred = "phred33"
+    String fastqFormat
     Int headCrop = 5
     Int threads = 6
     Int jobMemory = 16
@@ -148,7 +149,7 @@ task trimming {
     fastq2: "Second fastq input file containing reads"
     fastq1Basename: "Basename for the first fastq"
     fastq2Basename: "Basename for the second fastq"
-	phred: "Quality encoding, default is phred33, but can be set to phred64"
+    fastqFormat: "Quality encoding, default is phred33, but can be set to phred64"
     headCrop: "How many bases to crop"
     modules: "Module needed to run trimmomatic extract"
     jobMemory: "Memory (GB) allocated for this job"
@@ -159,7 +160,7 @@ task trimming {
     set -euo pipefail
     trimmomatic PE \
                 ~{fastq1} ~{fastq2} \
-				"-~{phred}" \
+                "-~{fastqFormat}" \
                 "~{fastq1Basename}.R1_paired.fastq.gz" "~{fastq1Basename}.R1_unpaired.fastq.gz" "~{fastq2Basename}.R2_paired.fastq.gz" "~{fastq2Basename}.R2_unpaired.fastq.gz" \
                 HEADCROP:~{headCrop}
   >>>
@@ -390,8 +391,8 @@ task extractMedipsCounts {
     alignmentSummaryMetrics: "Alignment summary metrics"
     thaliaSummary: "Summary of the thalia data"
     window: "value of window"
-	basename: "basename for the sample"
-	convert2bed: "path to conver2bed program"
+    basename: "basename for the sample"
+    convert2bed: "path to conver2bed program"
     modules: "Modules needed to run alignment metrics"
     jobMemory: "Memory (GB) allocated for this job"
     threads: "Requested CPU threads"
