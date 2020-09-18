@@ -56,7 +56,7 @@ workflow cfMedipsQc {
   parameter_meta {
     fastq1: "Read 1 input fastq file"
     fastq2: "Read 2 input fastq file"
-    fastqFormat: "The format of the fastq files to be used by trimomatic"
+    fastqFormat: "Quality encoding, default is phred33, but can be set to phred64"
     window:  "window length, over which to assess"
     referenceGenome: "reference genome to use"
     referenceModule: "module to load the reference genome"

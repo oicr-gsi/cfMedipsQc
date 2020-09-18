@@ -33,7 +33,7 @@ Parameter|Value|Description
 `fastq2`|File|Read 2 input fastq file
 `referenceGenome`|String|reference genome to use
 `referenceModule`|String|module to load the reference genome
-`fastqFormat`|String|The format of the fastq files to be used by trimomatic
+`fastqFormat`|String|Quality encoding, default is phred33, but can be set to phred64
 
 
 #### Optional workflow parameters:
