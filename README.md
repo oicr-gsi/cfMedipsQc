@@ -33,6 +33,7 @@ Parameter|Value|Description
 `fastq2`|File|Read 2 input fastq file
 `referenceGenome`|String|reference genome to use
 `referenceModule`|String|module to load the reference genome
+`fastqFormat`|String|Quality encoding, default is phred33, but can be set to phred64
 
 
 #### Optional workflow parameters:
@@ -123,3 +124,4 @@ mvn clean verify \
 For support, please file an issue on the [Github project](https://github.com/oicr-gsi) or send an email to gsi@oicr.on.ca .
 
 _Generated with generate-markdown-readme (https://github.com/oicr-gsi/gsi-wdl-tools/)_
+
