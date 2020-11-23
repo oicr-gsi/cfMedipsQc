@@ -405,7 +405,7 @@ task extractMedipsCounts {
   }
  
   command <<<
-    if [["~{referenceGenome}" == "$HG19_THALIANA_ROOT/hg19_thaliana_random.fa"]]
+    if [["~{referenceGenome}" == "$HG19_THALIANA_ROOT/hg19_thaliana_random.fa"]];
     then 
       commandLine="BSgenome.Hsapiens.UCSC.hg19"
     else 
