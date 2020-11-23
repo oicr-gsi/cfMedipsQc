@@ -7,6 +7,7 @@ workflow cfMedipsQc {
       String referenceGenome
       String referenceModule
       String fastqFormat
+      String reference
   }
   
   call trimming {
@@ -34,7 +35,7 @@ workflow cfMedipsQc {
 
   call extractMedipsCounts {
     input: dedupBam = preprocessing.dedupBam,
-           referenceGenome = referenceGenome,
+           reference = reference,
            metricsDedup = preprocessing.metricsDedup,
            summaryGcBiasMetrics = alignmentMetrics.summaryGcBiasMetrics,
            alignmentSummaryMetrics = alignmentMetrics.alignmentSummaryMetrics,
@@ -374,7 +375,7 @@ task alignmentMetrics {
 task extractMedipsCounts {
   input {
     File dedupBam
-    String referenceGenome
+    String reference
     File metricsDedup
     File summaryGcBiasMetrics
     File alignmentSummaryMetrics
@@ -405,9 +406,9 @@ task extractMedipsCounts {
   }
  
   command <<<
-    reference=~{referenceGenome}
+    reference=~{reference}
  
-    if [[$reference == $HG19_THALIANA_ROOT/hg19_thaliana_random.fa]]; then 
+    if [[$reference == hg19]]; then 
       commandLine=BSgenome.Hsapiens.UCSC.hg19
     else 
       commandLine=BSgenome.Hsapiens.UCSC.hg38
