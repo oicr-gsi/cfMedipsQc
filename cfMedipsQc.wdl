@@ -405,7 +405,6 @@ task extractMedipsCounts {
   }
  
   command <<<
-  
     if [~{referenceGenome} == "$HG19_THALIANA_ROOT/hg19_thaliana_random.fa"]
     then 
       commandLine="BSgenome.Hsapiens.UCSC.hg19"
@@ -430,7 +429,6 @@ task extractMedipsCounts {
       echo -e "$NAME\t$count0\t$count1\t$count10\t$count50\t$count100" >> coverage_windows.txt
       echo -e "samples\n~{basename}" > name.txt
       ~{convert2bed} -d --input wig < medips.wig > medips.bed
-
   >>>
   runtime {
     modules: "~{modules}"
