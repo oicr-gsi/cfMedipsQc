@@ -416,7 +416,7 @@ task extractMedipsCounts {
         --basedir . \
         --bamfile ~{dedupBam} \
         --samplename ~{basename} \
-        --BSgenome $commandLine
+        --BSgenome $commandLine \
         --ws  ~{window}\
         --outdir .
       NAME=""
