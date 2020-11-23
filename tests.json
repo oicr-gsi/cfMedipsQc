@@ -20,7 +20,8 @@
           "cfMedipsQc.fastq2": "/.mounts/labs/gsiprojects/gsi/workflow-dev/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R2_001.fastq.gz",
 	  "cfMedipsQc.fastqFormat": "phred33",
           "cfMedipsQc.referenceGenome": "$HG19_THALIANA_ROOT/hg19_thaliana_random.fa",
-          "cfMedipsQc.referenceModule": "hg19-thaliana/1.0"
+          "cfMedipsQc.referenceModule": "hg19-thaliana/1.0",
+          "cfMedipsQc.reference": "hg19"
         }
       }
     },
@@ -32,7 +33,8 @@
           "cfMedipsQc.fastq2": "/.mounts/labs/gsiprojects/gsi/workflow-dev/SWID_15919826_AIX_0010_Ct_T_PE_160102_CM_AWA4285_7_200121_M00146_0152_000000000-D7Y75_ACTCTCGA-TGGTACAG_L001_R2_001.fastq.gz",
 	  "cfMedipsQc.fastqFormat": "phred33",
           "cfMedipsQc.referenceGenome": "$HG19_THALIANA_ROOT/hg19_thaliana_random.fa",
-          "cfMedipsQc.referenceModule": "hg19-thaliana/1.0"
+          "cfMedipsQc.referenceModule": "hg19-thaliana/1.0",
+	  "cfMedipsQc.reference": "hg19"
         }
       }
     }
