@@ -391,7 +391,7 @@ task extractMedipsCounts {
   parameter_meta {
     dedupBam: "Dedup bam file"
     metricsDedup: "Metrics of dedup bam file"
-    referenceGenome: "Reference module path"
+    reference: "Reference module path"
     summaryGcBiasMetrics: "GC metrics summary"
     alignmentSummaryMetrics: "Alignment summary metrics"
     thaliaSummary: "Summary of the thalia data"
