@@ -410,7 +410,8 @@ task extractMedipsCounts {
       commandLine="BSgenome.Hsapiens.UCSC.hg19"
     else 
       commandLine="BSgenome.Hsapiens.UCSC.hg38"
-  
+    fi
+ 
     set -euo pipefail
       medips.R \
         --basedir . \
