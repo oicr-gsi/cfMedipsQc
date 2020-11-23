@@ -34,6 +34,7 @@ workflow cfMedipsQc {
 
   call extractMedipsCounts {
     input: dedupBam = preprocessing.dedupBam,
+           referenceGenome = referenceGenome,
            metricsDedup = preprocessing.metricsDedup,
            summaryGcBiasMetrics = alignmentMetrics.summaryGcBiasMetrics,
            alignmentSummaryMetrics = alignmentMetrics.alignmentSummaryMetrics,
@@ -373,6 +374,7 @@ task alignmentMetrics {
 task extractMedipsCounts {
   input {
     File dedupBam
+    String referenceGenome
     File metricsDedup
     File summaryGcBiasMetrics
     File alignmentSummaryMetrics
@@ -388,6 +390,7 @@ task extractMedipsCounts {
   parameter_meta {
     dedupBam: "Dedup bam file"
     metricsDedup: "Metrics of dedup bam file"
+    referenceGenome: "Reference module path"
     summaryGcBiasMetrics: "GC metrics summary"
     alignmentSummaryMetrics: "Alignment summary metrics"
     thaliaSummary: "Summary of the thalia data"
@@ -400,12 +403,21 @@ task extractMedipsCounts {
     timeout: "Number of hours before task timeout"
 
   }
+ 
   command <<<
+  
+    if [~{referenceGenome} == "$HG19_THALIANA_ROOT/hg19_thaliana_random.fa"]
+    then 
+      commandLine="BSgenome.Hsapiens.UCSC.hg19"
+    else 
+      commandLine="BSgenome.Hsapiens.UCSC.hg38"
+  
     set -euo pipefail
       medips.R \
         --basedir . \
         --bamfile ~{dedupBam} \
         --samplename ~{basename} \
+        --BSgenome $commandLine
         --ws  ~{window}\
         --outdir .
       NAME=""
