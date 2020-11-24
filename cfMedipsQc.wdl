@@ -408,13 +408,11 @@ task extractMedipsCounts {
   command <<<
     reference=~{reference}
  
-    if [[$reference == hg19]]; then 
+    if [[ $reference == hg19 ]]; then 
       commandLine=BSgenome.Hsapiens.UCSC.hg19
     else 
       commandLine=BSgenome.Hsapiens.UCSC.hg38
     fi
-   
-    echo $commandLine
  
     set -euo pipefail
       medips.R \
