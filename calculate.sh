@@ -8,4 +8,4 @@ set -o pipefail
 cd $1
 
 #find all files, return their md5sums to std out
-find . \( -type f -size +0 -iname "qc_metrics.json" \) -printf "json file exists %f\n";
+find . \( -xtype f -size +0 -iname "qc_metrics.json" \) -printf "json file exists %f\n";

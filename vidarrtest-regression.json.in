@@ -1,0 +1,316 @@
+[
+    {
+        "arguments": {
+            "cfMedipsQc.alignment.basename": null,
+            "cfMedipsQc.alignment.jobMemory": null,
+            "cfMedipsQc.alignment.modules": null,
+            "cfMedipsQc.alignment.threads": null,
+            "cfMedipsQc.alignment.timeout": null,
+            "cfMedipsQc.alignmentMetrics.basename": null,
+            "cfMedipsQc.alignmentMetrics.jobMemory": null,
+            "cfMedipsQc.alignmentMetrics.modules": null,
+            "cfMedipsQc.alignmentMetrics.threads": null,
+            "cfMedipsQc.alignmentMetrics.timeout": null,
+            "cfMedipsQc.extractMedipsCounts.basename": null,
+            "cfMedipsQc.extractMedipsCounts.convert2bed": null,
+            "cfMedipsQc.extractMedipsCounts.jobMemory": null,
+            "cfMedipsQc.extractMedipsCounts.modules": null,
+            "cfMedipsQc.extractMedipsCounts.threads": null,
+            "cfMedipsQc.extractMedipsCounts.timeout": null,
+            "cfMedipsQc.fastq1": {
+                "contents": {
+                    "configuration": "/.mounts/labs/gsiprojects/gsi/workflow-dev/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R1_001.fastq.gz",
+                    "externalIds": [
+                        {
+                            "id": "TEST",
+                            "provider": "TEST"
+                        }
+                    ]
+                },
+                "type": "EXTERNAL"
+            },
+            "cfMedipsQc.fastq2": {
+                "contents": {
+                    "configuration": "/.mounts/labs/gsiprojects/gsi/workflow-dev/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R2_001.fastq.gz",
+                    "externalIds": [
+                        {
+                            "id": "TEST",
+                            "provider": "TEST"
+                        }
+                    ]
+                },
+                "type": "EXTERNAL"
+            },
+            "cfMedipsQc.fastqFormat": "phred33",
+            "cfMedipsQc.finalMetrics.jobMemory": null,
+            "cfMedipsQc.finalMetrics.modules": null,
+            "cfMedipsQc.finalMetrics.threads": null,
+            "cfMedipsQc.finalMetrics.timeout": null,
+            "cfMedipsQc.preprocessing.basename": null,
+            "cfMedipsQc.preprocessing.jobMemory": null,
+            "cfMedipsQc.preprocessing.modules": null,
+            "cfMedipsQc.preprocessing.threads": null,
+            "cfMedipsQc.preprocessing.timeout": null,
+            "cfMedipsQc.referenceGenome": "$HG19_THALIANA_ROOT/hg19_thaliana_random.fa",
+            "cfMedipsQc.referenceModule": "hg19-thaliana/1.0",
+            "cfMedipsQc.trimming.fastq1Basename": null,
+            "cfMedipsQc.trimming.fastq2Basename": null,
+            "cfMedipsQc.trimming.headCrop": null,
+            "cfMedipsQc.trimming.jobMemory": null,
+            "cfMedipsQc.trimming.modules": null,
+            "cfMedipsQc.trimming.threads": null,
+            "cfMedipsQc.trimming.timeout": null,
+            "cfMedipsQc.window": null
+        },
+        "description": "cfMedipsQc workflow test",
+        "engineArguments": {},
+        "id": "cfMedipsQc_dataset1",
+        "metadata": {
+            "cfMedipsQc.outputAlignmentSummaryMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_dataset1_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputBaseDistributionMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_dataset1_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputDedupBam": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_dataset1_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputGcBiasMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_dataset1_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputInsertSizeMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_dataset1_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputQualityByCycleMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_dataset1_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputQualityDistributionMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_dataset1_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputSummaryGcBiasMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_dataset1_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputThaliaSummary": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_dataset1_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputqcMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_dataset1_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            }
+        },
+        "validators": [
+            {
+                "metrics_calculate": "@CHECKOUT@/./calculate.sh",
+                "metrics_compare": "@CHECKOUT@/./compare.sh",
+                "output_metrics": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/output_metrics/cfMedipsQc_dataset1.metrics",
+                "type": "script"
+            }
+        ]
+    },
+    {
+        "arguments": {
+            "cfMedipsQc.alignment.basename": null,
+            "cfMedipsQc.alignment.jobMemory": null,
+            "cfMedipsQc.alignment.modules": null,
+            "cfMedipsQc.alignment.threads": null,
+            "cfMedipsQc.alignment.timeout": null,
+            "cfMedipsQc.alignmentMetrics.basename": null,
+            "cfMedipsQc.alignmentMetrics.jobMemory": null,
+            "cfMedipsQc.alignmentMetrics.modules": null,
+            "cfMedipsQc.alignmentMetrics.threads": null,
+            "cfMedipsQc.alignmentMetrics.timeout": null,
+            "cfMedipsQc.extractMedipsCounts.basename": null,
+            "cfMedipsQc.extractMedipsCounts.convert2bed": null,
+            "cfMedipsQc.extractMedipsCounts.jobMemory": null,
+            "cfMedipsQc.extractMedipsCounts.modules": null,
+            "cfMedipsQc.extractMedipsCounts.threads": null,
+            "cfMedipsQc.extractMedipsCounts.timeout": null,
+            "cfMedipsQc.fastq1": {
+                "contents": {
+                    "configuration": "/.mounts/labs/gsiprojects/gsi/workflow-dev/SWID_15919826_AIX_0010_Ct_T_PE_160102_CM_AWA4285_7_200121_M00146_0152_000000000-D7Y75_ACTCTCGA-TGGTACAG_L001_R1_001.fastq.gz",
+                    "externalIds": [
+                        {
+                            "id": "TEST",
+                            "provider": "TEST"
+                        }
+                    ]
+                },
+                "type": "EXTERNAL"
+            },
+            "cfMedipsQc.fastq2": {
+                "contents": {
+                    "configuration": "/.mounts/labs/gsiprojects/gsi/workflow-dev/SWID_15919826_AIX_0010_Ct_T_PE_160102_CM_AWA4285_7_200121_M00146_0152_000000000-D7Y75_ACTCTCGA-TGGTACAG_L001_R2_001.fastq.gz",
+                    "externalIds": [
+                        {
+                            "id": "TEST",
+                            "provider": "TEST"
+                        }
+                    ]
+                },
+                "type": "EXTERNAL"
+            },
+            "cfMedipsQc.fastqFormat": "phred33",
+            "cfMedipsQc.finalMetrics.jobMemory": null,
+            "cfMedipsQc.finalMetrics.modules": null,
+            "cfMedipsQc.finalMetrics.threads": null,
+            "cfMedipsQc.finalMetrics.timeout": null,
+            "cfMedipsQc.preprocessing.basename": null,
+            "cfMedipsQc.preprocessing.jobMemory": null,
+            "cfMedipsQc.preprocessing.modules": null,
+            "cfMedipsQc.preprocessing.threads": null,
+            "cfMedipsQc.preprocessing.timeout": null,
+            "cfMedipsQc.referenceGenome": "$HG19_THALIANA_ROOT/hg19_thaliana_random.fa",
+            "cfMedipsQc.referenceModule": "hg19-thaliana/1.0",
+            "cfMedipsQc.trimming.fastq1Basename": null,
+            "cfMedipsQc.trimming.fastq2Basename": null,
+            "cfMedipsQc.trimming.headCrop": null,
+            "cfMedipsQc.trimming.jobMemory": null,
+            "cfMedipsQc.trimming.modules": null,
+            "cfMedipsQc.trimming.threads": null,
+            "cfMedipsQc.trimming.timeout": null,
+            "cfMedipsQc.window": null
+        },
+        "description": "cfMedipsQc workflow test",
+        "engineArguments": {},
+        "id": "cfMedipsQc_setsize",
+        "metadata": {
+            "cfMedipsQc.outputAlignmentSummaryMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_setsize_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputBaseDistributionMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_setsize_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputDedupBam": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_setsize_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputGcBiasMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_setsize_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputInsertSizeMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_setsize_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputQualityByCycleMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_setsize_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputQualityDistributionMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_setsize_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputSummaryGcBiasMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_setsize_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputThaliaSummary": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_setsize_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            },
+            "cfMedipsQc.outputqcMetrics": {
+                "contents": [
+                    {
+                        "outputDirectory": "@SCRATCH@/@DATE@_Workflow_cfMedipsQc_cfMedipsQc_setsize_@JENKINSID@"
+                    }
+                ],
+                "type": "ALL"
+            }
+        },
+        "validators": [
+            {
+                "metrics_calculate": "@CHECKOUT@/./calculate.sh",
+                "metrics_compare": "@CHECKOUT@/./compare.sh",
+                "output_metrics": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/output_metrics/cfMedipsQc_setsize.metrics",
+                "type": "script"
+            }
+        ]
+    }
+]
