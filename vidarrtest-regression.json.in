@@ -19,7 +19,7 @@
             "cfMedipsQc.extractMedipsCounts.timeout": null,
             "cfMedipsQc.fastq1": {
                 "contents": {
-                    "configuration": "/.mounts/labs/gsiprojects/gsi/workflow-dev/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R1_001.fastq.gz",
+                    "configuration": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/input_data/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R1_001.fastq.gz",
                     "externalIds": [
                         {
                             "id": "TEST",
@@ -31,7 +31,7 @@
             },
             "cfMedipsQc.fastq2": {
                 "contents": {
-                    "configuration": "/.mounts/labs/gsiprojects/gsi/workflow-dev/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R2_001.fastq.gz",
+                    "configuration": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/input_data/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R2_001.fastq.gz",
                     "externalIds": [
                         {
                             "id": "TEST",
@@ -63,7 +63,10 @@
             "cfMedipsQc.window": null
         },
         "description": "cfMedipsQc workflow test",
-        "engineArguments": {},
+        "engineArguments": {
+           "write_to_cache": false,
+           "read_from_cache": false
+        },
         "id": "cfMedipsQc_dataset1",
         "metadata": {
             "cfMedipsQc.outputAlignmentSummaryMetrics": {
@@ -176,7 +179,7 @@
             "cfMedipsQc.extractMedipsCounts.timeout": null,
             "cfMedipsQc.fastq1": {
                 "contents": {
-                    "configuration": "/.mounts/labs/gsiprojects/gsi/workflow-dev/SWID_15919826_AIX_0010_Ct_T_PE_160102_CM_AWA4285_7_200121_M00146_0152_000000000-D7Y75_ACTCTCGA-TGGTACAG_L001_R1_001.fastq.gz",
+                    "configuration": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/input_data/SWID_15919826_AIX_0010_Ct_T_PE_160102_CM_AWA4285_7_200121_M00146_0152_000000000-D7Y75_ACTCTCGA-TGGTACAG_L001_R1_001.fastq.gz",
                     "externalIds": [
                         {
                             "id": "TEST",
@@ -188,7 +191,7 @@
             },
             "cfMedipsQc.fastq2": {
                 "contents": {
-                    "configuration": "/.mounts/labs/gsiprojects/gsi/workflow-dev/SWID_15919826_AIX_0010_Ct_T_PE_160102_CM_AWA4285_7_200121_M00146_0152_000000000-D7Y75_ACTCTCGA-TGGTACAG_L001_R2_001.fastq.gz",
+                    "configuration": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/input_data/SWID_15919826_AIX_0010_Ct_T_PE_160102_CM_AWA4285_7_200121_M00146_0152_000000000-D7Y75_ACTCTCGA-TGGTACAG_L001_R2_001.fastq.gz",
                     "externalIds": [
                         {
                             "id": "TEST",
@@ -220,7 +223,10 @@
             "cfMedipsQc.window": null
         },
         "description": "cfMedipsQc workflow test",
-        "engineArguments": {},
+        "engineArguments": {
+           "write_to_cache": false,
+           "read_from_cache": false
+        },
         "id": "cfMedipsQc_setsize",
         "metadata": {
             "cfMedipsQc.outputAlignmentSummaryMetrics": {
