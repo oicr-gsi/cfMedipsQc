@@ -6,5 +6,8 @@ set -o pipefail
 #enter the workflow's final output directory ($1)
 cd $1
 
-#find all files, return their md5sums to std out
-find . \( -xtype f -size +0 -iname "qc_metrics.json" \) -printf "json file exists %f\n";
+#get md5sum for output file ignoring two lines
+cat qc_metrics.json | grep -v "maxEstCor\"\|maxTruCor\"" | md5sum
+
+#check that all files were produced
+ls | perl -pe  's/.*?\.//' | sort | uniq -c
