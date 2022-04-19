@@ -325,7 +325,7 @@ task alignmentMetrics {
       CHART="~{basename}.gc_bias_metrics.pdf"
     samtools view ~{dedupBam} | cut -f 3 | sort | uniq -c | sort -nr | sed -e 's/^ *//;s/ /\t/' | awk 'OFS="\t" {print $2,$1}' | sort -n -k1,1 > thalia.counts
     total=$(samtools view ~{dedupBam} | wc -l)
-    unmap=$(cat thalia.counts | grep "^\*" | cut -f2); if [[ -z $unmap ]]; then unmap="0"; fi
+    if [[ $(cat thalia.counts | grep "^\*" | cut -f2) == "" ]]; then unmap=0; else unmap=$(cat thalia.counts | grep "^\*" | cut -f2); fi
     if [[ $(cat thalia.counts | grep F19K16 | cut -f2) == "" ]]; then methyl=0; else methyl=$(cat thalia.counts | grep F19K16 | cut -f2); fi
     if [[ $(cat thalia.counts | grep F24B22 | cut -f2) == "" ]]; then unmeth=0; else unmeth=$(cat thalia.counts | grep F24B22 | cut -f2); fi
     if [[ $total == "" ]]; then pct_thalia=0; else pct_thalia=$(echo "scale=3; ($methyl + $unmeth)/$total * 100" | bc -l); fi
