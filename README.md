@@ -1,7 +1,7 @@
 # cfMedipsQc
 
 cfMedipsQC workflow produces a set of metrics files for sequencing data generated in methylation profiling of circulating Free DNA
-[cfMedipsQC flowchart](docs/cfMedipsQC.png)
+![cfMedipsQC flowchart](docs/cfMedipsQC.png)
 
 ## Dependencies
 
