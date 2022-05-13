@@ -65,7 +65,7 @@ workflow cfMedipsQc {
   meta {
     author: "Rishi Shah"
     email: "rshah@oicr.on.ca"
-    description: "cfMedipsQC workflow produces a set of metrics files for sequencing data generated in methylation profiling of circulating Free DNA\n![cfMedipsQC flowchart](docs/cfMedipsQC.png)\n"
+    description: "cfMedipsQC workflow produces a set of metrics files for sequencing data generated in methylation profiling of circulating Free DNA\n\n\n![cfMedipsQC flowchart](docs/cfMedipsQC.png)"
     dependencies: 
     [
       {
