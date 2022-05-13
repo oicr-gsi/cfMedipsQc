@@ -1,3 +1,5 @@
+# 1.0.6 - 2022-05-13
+[GP-2942](https://jira.oicr.on.ca/browse/GP-2942) : making insert size metrics an optional output (to prevent fails when not enough data are available)
 ## 1.0.5 - 2022-04-19
 [GC-9245](https://jira.oicr.on.ca/browse/GC-9245) : small bug in the final shell script, to deal with grep causing pipefail
 [GP-2872](https://jira.oicr.on.ca/browse/GP-2872) Making RT scripts more robust

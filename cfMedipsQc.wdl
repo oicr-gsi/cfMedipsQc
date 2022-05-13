@@ -65,7 +65,7 @@ workflow cfMedipsQc {
   meta {
     author: "Rishi Shah"
     email: "rshah@oicr.on.ca"
-    description: "Medips"
+    description: "cfMedipsQC workflow produces a set of metrics files for sequencing data generated in methylation profiling of circulating Free DNA\n[cfMedipsQC flowchart](docs/cfMedipsQC.png)\n"
     dependencies: 
     [
       {
@@ -108,7 +108,7 @@ workflow cfMedipsQc {
     output_meta: {
        outputAlignmentSummaryMetrics: "Metric for alignments",
        outputBaseDistributionMetrics: "Metrics for base distributions",
-       outputInsertSizeMetrics: "Metrics for insert size",
+       outputInsertSizeMetrics: "Metrics for insert size (Optional, when enough data are available)",
        outputQualityByCycleMetrics: "Quality by cycle metrics",
        outputQualityDistributionMetrics: "Quality distribution metrics",
        outputGcBiasMetrics: "gc bias metrics",
@@ -121,7 +121,7 @@ workflow cfMedipsQc {
   output {
     File outputAlignmentSummaryMetrics = alignmentMetrics.alignmentSummaryMetrics 
     File outputBaseDistributionMetrics = alignmentMetrics.baseDistributionMetrics
-    File outputInsertSizeMetrics = alignmentMetrics.insertSizeMetrics
+    File? outputInsertSizeMetrics = alignmentMetrics.insertSizeMetrics
     File outputQualityByCycleMetrics = alignmentMetrics.qualityByCycleMetrics
     File outputQualityDistributionMetrics = alignmentMetrics.qualityDistributionMetrics
     File outputGcBiasMetrics = alignmentMetrics.gcBiasMetrics
@@ -346,7 +346,7 @@ task alignmentMetrics {
   output {
     File alignmentSummaryMetrics = "~{basename}.alignment_summary_metrics"
     File baseDistributionMetrics = "~{basename}.base_distribution_by_cycle_metrics"
-    File insertSizeMetrics = "~{basename}.insert_size_metrics"
+    File? insertSizeMetrics = "~{basename}.insert_size_metrics"
     File qualityByCycleMetrics = "~{basename}.quality_by_cycle_metrics"
     File qualityDistributionMetrics = "~{basename}.quality_distribution_metrics"
     File gcBiasMetrics = "~{basename}.gc_bias_metrics.txt"
