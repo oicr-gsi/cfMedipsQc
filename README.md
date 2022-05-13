@@ -105,27 +105,27 @@ Output | Type | Description
  
  Run read trimming with trimmomatic
  
- '''
+ ```
      set -euo pipefail
      trimmomatic PE  FASTQ_R1 FASTQ_R2 \
                  "-phred33 \  (can be set to phred64)
                  "FASTQ_R1_BASENAME.R1_paired.fastq.gz" "FASTQ_R1_BASENAME.R1_unpaired.fastq.gz" "FASTQ_R2_BASENAME.R2_paired.fastq.gz" "FASTQ_R2_BASENAME.R2_unpaired.fastq.gz" \
                  HEADCROP:5 (how many bases to crop, configurable)
- '''
+ ```
  
  Align with Bowtie2
  
- '''
+ ```
      set -euo pipefail
      bowtie2 -p 8 -x REFEFENCE_FASTA \
              -1 FASTQ_R1 \
              -2 FASTQ_R2 \
              -S "BASENAME.sam"
- '''
+ ```
  
  Preprocessing: sort and mark duplicates without removing them
  
- '''
+ ```
      set -euo pipefail
      samtools view -bS SAM_FILE | samtools sort -o "BASENAME.sorted.bam"
      java -jar picard.jar MarkDuplicates \
@@ -135,11 +135,11 @@ Output | Type | Description
        ASSUME_SORTED=true \
        VALIDATION_STRINGENCY=SILENT \
        REMOVE_DUPLICATES=false
- '''
+ ```
  
  Collecting metrics using picard tools
  
- ''' 
+ ``` 
      set -euo pipefail
      java -jar picard.jar CollectMultipleMetrics \
        R=REFERENCE_GENOME\
@@ -164,11 +164,11 @@ Output | Type | Description
      echo -e "total\tunmap\tmethyl\tunmeth\tPCT_THALIANA\tTHALIANA_BETA" > thalia_summary.txt
      echo -e "$total\t$unmap\t$methyl\t$unmeth\t$pct_thalia\t$bet_thalia" >> thalia_summary.txt
  
- '''
+ ```
  
  Run Medips R script, calculate coverage metrics
  
- '''
+ ```
      set -euo pipefail
        medips.R \
          --basedir . \
@@ -187,11 +187,11 @@ Output | Type | Description
        echo -e "samples\n~{basename}" > name.txt
        CONVERT2BED_EXECUTABLE -d --input wig < medips.wig > medips.bed
  
- '''
+ ```
  
  Prepare json report:
  
- '''
+ ```
      set -euo pipefail
      txt-to-json.py -n FILE_NAME \
                     -e ENRICHMENT_DATA \
@@ -202,7 +202,7 @@ Output | Type | Description
                     -u GCBIAS_DATA \
                     -a ALIGNMENT_SUMMARY_DATA \
                     -t TALIA_SUMMARY
- '''
+ ```
  ## Support
 
 For support, please file an issue on the [Github project](https://github.com/oicr-gsi) or send an email to gsi@oicr.on.ca .
