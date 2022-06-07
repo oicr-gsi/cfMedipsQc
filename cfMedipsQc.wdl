@@ -6,7 +6,6 @@ workflow cfMedipsQc {
       Int window = 300
       String referenceGenome
       String referenceModule
-      String reference
       String fastqFormat
   }
   
@@ -35,7 +34,6 @@ workflow cfMedipsQc {
 
   call extractMedipsCounts {
     input: dedupBam = preprocessing.dedupBam,
-           reference = reference,
            metricsDedup = preprocessing.metricsDedup,
            summaryGcBiasMetrics = alignmentMetrics.summaryGcBiasMetrics,
            alignmentSummaryMetrics = alignmentMetrics.alignmentSummaryMetrics,
