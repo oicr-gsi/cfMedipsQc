@@ -1,3 +1,5 @@
+# 1.0.7 - 2022-06-07
+[GP-3386](https://jira.oicr.on.ca/browse/GP-3386) : restoring reference argument for extract medips counts task
 # 1.0.6 - 2022-05-13
 [GP-2942](https://jira.oicr.on.ca/browse/GP-2942) : making insert size metrics an optional output (to prevent fails when not enough data are available)
 ## 1.0.5 - 2022-04-19

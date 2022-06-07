@@ -34,7 +34,9 @@ Parameter|Value|Description
 `fastq2`|File|Read 2 input fastq file
 `referenceGenome`|String|reference genome to use
 `referenceModule`|String|module to load the reference genome
+`reference` |String|assembly id i.e. hg19 or hg38 (only these two are supported)
 `fastqFormat`|String|Quality encoding, default is phred33, but can be set to phred64
+`extractMedipsCounts.reference`|String|Assembly id, hg19 or hg38
 
 
 #### Optional workflow parameters:
