@@ -373,6 +373,7 @@ task alignmentMetrics {
 task extractMedipsCounts {
   input {
     File dedupBam
+    String reference
     File metricsDedup
     File summaryGcBiasMetrics
     File alignmentSummaryMetrics
@@ -388,6 +389,7 @@ task extractMedipsCounts {
   parameter_meta {
     dedupBam: "Dedup bam file"
     metricsDedup: "Metrics of dedup bam file"
+    reference: "Reference module path"
     summaryGcBiasMetrics: "GC metrics summary"
     alignmentSummaryMetrics: "Alignment summary metrics"
     thaliaSummary: "Summary of the thalia data"
@@ -400,12 +402,25 @@ task extractMedipsCounts {
     timeout: "Number of hours before task timeout"
 
   }
+ 
   command <<<
+    reference=~{reference}
+ 
+    if [[ $reference == hg19 ]]; then
+      bsGenome=BSgenome.Hsapiens.UCSC.hg19
+    elif [[ $reference == hg38 ]]; then
+      bsGenome=BSgenome.Hsapiens.UCSC.hg38
+    else
+      echo "Unsupported Reference $reference"
+      exit
+    fi
+ 
     set -euo pipefail
       medips.R \
         --basedir . \
         --bamfile ~{dedupBam} \
         --samplename ~{basename} \
+        --BSgenome $bsGenome \
         --ws  ~{window}\
         --outdir .
       NAME=""
