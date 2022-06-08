@@ -406,10 +406,13 @@ task extractMedipsCounts {
   command <<<
     reference=~{reference}
  
-    if [[ $reference == hg19 ]]; then 
+    if [[ $reference == hg19 ]]; then
       bsGenome=BSgenome.Hsapiens.UCSC.hg19
-    else 
+    elif [[ $reference == hg38 ]]; then
       bsGenome=BSgenome.Hsapiens.UCSC.hg38
+    else
+      echo "Unsupported Reference $reference"
+      exit
     fi
  
     set -euo pipefail
