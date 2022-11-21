@@ -114,7 +114,7 @@ Output | Type | Description
  
  cfMedipsQC is designed to produce several QC metrics using samtools and picard. Runs it's own alignment with bowtie2
  
-###Run read trimming with trimmomatic
+### Run read trimming with trimmomatic
  
 ```
     set -euo pipefail
@@ -124,7 +124,7 @@ Output | Type | Description
                 HEADCROP:5 (how many bases to crop, configurable)
 ```
  
-###Align with Bowtie2
+### Align with Bowtie2
  
 ```
     set -euo pipefail
@@ -134,7 +134,7 @@ Output | Type | Description
             -S "BASENAME.sam"
 ```
  
-###Preprocessing: sort and mark duplicates without removing them
+### Preprocessing: sort and mark duplicates without removing them
  
 ```
     set -euo pipefail
@@ -149,7 +149,7 @@ Output | Type | Description
       REMOVE_DUPLICATES=false
 ```
  
-###Collecting metrics using picard tools
+### Collecting metrics using picard tools
  
 ``` 
     set -euo pipefail
@@ -178,19 +178,19 @@ Output | Type | Description
  
 ```
  
-###Collect chromosomal ids
+### Collect chromosomal ids
  
 ```
     cut -f 1 ~{refFai} | uniq | grep -v _ | grep -v M | grep ^chr
 ```
  
-###Collect chromosomal sizes
+### Collect chromosomal sizes
  
 ```
     grep -w ^~{chromosome} ~{refFai} | cut -f 2
 ```
  
-###Aggregate metrics collected by extractMedipsCount task
+### Aggregate metrics collected by extractMedipsCount task
  
 ```
     set -euo pipefail   
@@ -215,7 +215,7 @@ Output | Type | Description
      grep -v samples name.tmp | sort -u >> name.txt 
 ```
  
-###Extract Medips Counts
+### Extract Medips Counts
  
 ```
      reference=~{reference}
@@ -254,7 +254,7 @@ Output | Type | Description
  
 ```
  
-###Prepare json report (Final Metrics):
+### Prepare json report (Final Metrics):
  
 ```
      set -euo pipefail
