@@ -5,6 +5,7 @@ workflow cfMedipsQc {
     File fastq2
     Int window = 300
     String referenceGenome
+    String referenceGenomeIndex
     String referenceModule
     String fastqFormat
   }
@@ -33,24 +34,26 @@ workflow cfMedipsQc {
   }
 
   call splitFaiToArray {
-    input: modules = referenceModule
+    input: modules = referenceModule,
+           refFai = referenceGenomeIndex
   }
   
   scatter(c in splitFaiToArray.out) {
     call getChromosomeLength {
-    input: chromosome = c          
+      input: chromosome = c,
+             refFai = referenceGenomeIndex
     }
 
     call extractMedipsCounts {
-    input: dedupBam = preprocessing.dedupBam,
-           dedupBai = preprocessing.dedupBai, 
-           metricsDedup = preprocessing.metricsDedup,
-           summaryGcBiasMetrics = alignmentMetrics.summaryGcBiasMetrics,
-           alignmentSummaryMetrics = alignmentMetrics.alignmentSummaryMetrics,
-           thaliaSummary = alignmentMetrics.thaliaSummary,
-           chromosome = c,
-           chromosomeLength = getChromosomeLength.length,
-           window = window
+      input: dedupBam = preprocessing.dedupBam,
+             dedupBai = preprocessing.dedupBai, 
+             metricsDedup = preprocessing.metricsDedup,
+             summaryGcBiasMetrics = alignmentMetrics.summaryGcBiasMetrics,
+             alignmentSummaryMetrics = alignmentMetrics.alignmentSummaryMetrics,
+             thaliaSummary = alignmentMetrics.thaliaSummary,
+             chromosome = c,
+             chromosomeLength = getChromosomeLength.length,
+             window = window
     }
   }
 
@@ -566,7 +569,7 @@ task extractMedipsCounts {
     Int threads = 8
     Int jobMemory = 32
     Int timeout = 6  
-    String modules = "rstats/3.5 cfmedips/1.5.1 bedops/2.4.37"
+    String modules = "samtools/1.9 rstats/3.5 cfmedips/1.5.1 bedops/2.4.37"
   }
 
   parameter_meta {
