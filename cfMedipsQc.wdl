@@ -1,12 +1,12 @@
 version 1.0
 workflow cfMedipsQc {
   input {
-      File fastq1
-      File fastq2
-      Int window = 300
-      String referenceGenome
-      String referenceModule
-      String fastqFormat
+    File fastq1
+    File fastq2
+    Int window = 300
+    String referenceGenome
+    String referenceModule
+    String fastqFormat
   }
   
   call trimming {
@@ -32,25 +32,47 @@ workflow cfMedipsQc {
            referenceModule = referenceModule
   }
 
-  call extractMedipsCounts {
+  call splitFaiToArray {
+    input: modules = referenceModule
+  }
+  
+  scatter(c in splitFaiToArray.out) {
+    call getChromosomeLength {
+    input: chromosome = c          
+    }
+
+    call extractMedipsCounts {
     input: dedupBam = preprocessing.dedupBam,
+           dedupBai = preprocessing.dedupBai, 
            metricsDedup = preprocessing.metricsDedup,
            summaryGcBiasMetrics = alignmentMetrics.summaryGcBiasMetrics,
            alignmentSummaryMetrics = alignmentMetrics.alignmentSummaryMetrics,
            thaliaSummary = alignmentMetrics.thaliaSummary,
+           chromosome = c,
+           chromosomeLength = getChromosomeLength.length,
            window = window
+    }
   }
+
+  call aggregateMetrics {
+    input: coverageWindowsFiles = extractMedipsCounts.coverageWindows,
+           enrichmentDataFiles = extractMedipsCounts.enrichmentData,
+           coverageCountsFiles = extractMedipsCounts.coverageCounts,
+           saturationMetricsFiles = extractMedipsCounts.saturationMetrics,
+           nameFiles = extractMedipsCounts.nameFile
+  }
+  
   call finalMetrics {
     input: dedupBam = preprocessing.dedupBam,
            metricsDedup = preprocessing.metricsDedup,
            summaryGcBiasMetrics = alignmentMetrics.summaryGcBiasMetrics,
            alignmentSummaryMetrics = alignmentMetrics.alignmentSummaryMetrics,
            thaliaSummary = alignmentMetrics.thaliaSummary,
-           coverageWindows = extractMedipsCounts.coverageWindows,
-           enrichmentData = extractMedipsCounts.enrichmentData,
-           coverageCounts = extractMedipsCounts.coverageCounts, 
-           saturationMetrics = extractMedipsCounts.saturationMetrics,
-           nameFile = extractMedipsCounts.nameFile
+           coverageWindows = aggregateMetrics.coverageWindows,
+           enrichmentData = aggregateMetrics.enrichmentData,
+           coverageCounts = aggregateMetrics.coverageCounts, 
+           saturationMetrics = aggregateMetrics.saturationMetrics,
+           nameFile = aggregateMetrics.nameFile
   }
 
   parameter_meta {
@@ -85,11 +107,11 @@ workflow cfMedipsQc {
       url: "https://www.r-project.org/"
       },
       {
-      name: "python/3.6",
+      name: "python/3.7",
       url: "https://www.python.org/"
       },
       {
-      name: "cfmedips/1.5",
+      name: "cfmedips/1.5.1",
       url: "https://github.com/oicr-gsi/medips-tools.git"
       },
       {
@@ -129,8 +151,10 @@ workflow cfMedipsQc {
     File outputThaliaSummary = alignmentMetrics.thaliaSummary
     File outputDedupBam = preprocessing.dedupBam
     File outputqcMetrics = finalMetrics.qcMetrics
+    }
   }
-}
+
+
 task trimming {
   input {
     File fastq1
@@ -190,6 +214,7 @@ task trimming {
   }
 }
 
+
 task alignment {
   input {
     File fastq1Paired
@@ -207,6 +232,7 @@ task alignment {
     fastq2Paired: "Second fastq input file containing reads"
     basename: "Name to make output sam file"
     referenceGenome: "Using either HG19 or HG38 both with added chromosomes"
+    referenceModule: "Reference Module"
     modules: "Module needed to run bowtie2 alignment"
     jobMemory: "Memory (GB) allocated for this job"
     threads: "Requested CPU threads"
@@ -237,6 +263,7 @@ task alignment {
   }
 }
 
+
 task preprocessing {
   input {
     File samFile
@@ -264,9 +291,11 @@ task preprocessing {
       O="~{basename}.sorted.dedup.bam" \
       M="~{basename}.sorted.dedup.metrics" \
       ASSUME_SORTED=true \
+      CREATE_INDEX=true \
       VALIDATION_STRINGENCY=SILENT \
       REMOVE_DUPLICATES=false
   >>>
+
   runtime {
     modules: "~{modules}"
     memory:  "~{jobMemory} GB"
@@ -277,33 +306,38 @@ task preprocessing {
   output {
     File bamFile = "~{basename}.sorted.bam"
     File dedupBam = "~{basename}.sorted.dedup.bam"
+    File dedupBai = "~{basename}.sorted.dedup.bai"
     File metricsDedup = "~{basename}.sorted.dedup.metrics"
   }
+
   meta {
     output_meta: {
      bamFile: "Stores the aligned genome",
      dedupBam: "Stores the genome de-duplicated",
+     dedupBai: "De-duplicated bam index file",
      metricsDedup: "Stores the dedup metrics"
     }
   }
-
 }
+
 
 task alignmentMetrics {
   input {
     File dedupBam
-    String basename =basename("~{dedupBam}", ".sorted.dedup.bam")
+    String basename = basename("~{dedupBam}", ".sorted.dedup.bam")
     String referenceModule
     String referenceGenome
     Int threads = 8
     Int jobMemory = 32
     Int timeout = 6  
     String modules = "samtools/1.9 picard/2.21.2 ~{referenceModule} bc/2.1.3 rstats/3.5"
-  } 
- parameter_meta {
+  }
+ 
+  parameter_meta {
     dedupBam: "De-Duplicated Bam file"
     basename: "Name to make output files"
     referenceGenome: "Using either HG19 or HG38 both with added chromosomes"
+    referenceModule: "Reference module, configurable via an olive"
     modules: "Modules needed to run alignment metrics"
     jobMemory: "Memory (GB) allocated for this job"
     threads: "Requested CPU threads"
@@ -352,7 +386,6 @@ task alignmentMetrics {
     File gcBiasMetrics = "~{basename}.gc_bias_metrics.txt"
     File summaryGcBiasMetrics = "~{basename}.summary_gc_bias_metrics.txt"
     File thaliaSummary = "thalia_summary.txt"
-
   }
 
   meta {
@@ -367,12 +400,158 @@ task alignmentMetrics {
      thaliaSummary: "Summary of thalia metrics"
     }
   }
-
 }
+
+
+task splitFaiToArray {
+  input {
+    Int memory = 1
+    Int timeout = 1
+    String modules
+    String refFai
+  }
+
+  parameter_meta {
+    refFai: ".fai file for the reference genome, we use it to extract chromosome ids"
+    timeout: "Hours before task timeout"
+    memory: "Memory allocated for this job"
+    modules: "Names and versions of modules to load"
+  }
+
+  command <<<
+    cut -f 1 ~{refFai} | uniq | grep -v _ | grep -v M | grep ^chr
+  >>>
+
+  runtime {
+    memory:  "~{memory} GB"
+    modules: "~{modules}"
+    timeout: "~{timeout}"
+  }
+
+  output {
+    Array[String] out = read_lines(stdout())
+  }
+
+  meta {
+    output_meta: {
+      out: "Chromosomes to split extractMedipsCounts jobs by, in Array[String] format."
+    }
+  } 
+}
+
+
+task getChromosomeLength {
+  input {
+    Int memory = 1
+    Int timeout = 1
+    String chromosome
+    String modules
+    String refFai
+  }
+
+  parameter_meta {
+    refFai: ".fai file for the reference genome, we use it to extract chromosome ids"
+    timeout: "Hours before task timeout"
+    chromosome: "Chromosome to check"
+    memory: "Memory allocated for this job"
+    modules: "Names and versions of modules to load"
+  }
+
+  command <<<
+    grep -w ^~{chromosome} ~{refFai} | cut -f 2
+  >>>
+
+  runtime {
+    memory:  "~{memory} GB"
+    modules: "~{modules}"
+    timeout: "~{timeout}"
+  }
+
+  output {
+    String length = read_string(stdout())
+  }
+
+  meta {
+    output_meta: {
+      length: "Length of the chromosome requested."
+    }
+  }
+}
+
+
+task aggregateMetrics {
+  input {
+    Array[File] coverageWindowsFiles
+    Array[File] enrichmentDataFiles
+    Array[File] coverageCountsFiles
+    Array[File] saturationMetricsFiles
+    Array[File] nameFiles
+    Int jobMemory = 1
+    Int timeout = 1
+  }
+
+  parameter_meta {
+    coverageWindowsFiles: "Chunks generated by scattering extractMedipsCounts by chromosome"
+    enrichmentDataFiles: "enrichmentData chunks generated by scattering extractMedipsCounts by chromosome"
+    coverageCountsFiles: "coverageCounts chunks generated by scattering extractMedipsCounts by chromosome"
+    saturationMetricsFiles: "saturationMetrics chunks generated by scattering extractMedipsCounts by chromosome"
+    nameFiles: "nameFile chunks generated by scattering extractMedipsCounts by chromosome"
+    timeout: "Hours before task timeout"
+    jobMemory: "Memory allocated for this job"
+  }
+
+  command <<<
+    set -euo pipefail   
+    cat ~{sep=" " coverageWindowsFiles} > "coverage_windows.tmp"
+    head -n 1 coverage_windows.tmp > coverage_windows.txt
+    grep -v ^sample coverage_windows.tmp | awk '{sum1+=$1;sum2+=$2;sum3+=$3;sum4+=$4;sum5+=$5} END{OFS="\t";print sum1,sum2,sum3,sum4,sum5;}' >> coverage_windows.txt
+
+    cat ~{sep=" " enrichmentDataFiles} > "enrichment_data.tmp"
+    head -n 1 enrichment_data.tmp > enrichment_data.txt
+    grep -v regions enrichment_data.tmp | awk '{sum1+=$2;sum2+=$3;sum3+=$4;sum4+=$5;sum5+=$6;sum6+=$7;sum7+=$8;sum8+=$9;sum9+=$10;sum10+=$11;sum11+=$12;sum12+=$13;sum13+=$14;count+=1}END{OFS="\t";print $1, $2, sum2, sum3, sum4, sum5/count, sum6/count, sum7/count, sum8/count, sum9/count, sum10/count, sum11/count, sum12/count, sum13/count}' >> enrichment_data.txt
+
+    cat ~{sep=" " coverageCountsFiles} >  "coverage_counts.tmp"
+    head -n 1 coverage_counts.tmp > coverage_counts.txt
+    tail +1 coverage_counts.tmp | awk -F'\t' '{sum1+=$2;sum2+=$3} END{OFS="\t";print $1,sum1,sum2;}' >> coverage_counts.txt
+
+    cat ~{sep=" " saturationMetricsFiles} > "saturation_metrics.tmp"
+    head -n 1 saturation_metrics.tmp > saturation_metrics.txt
+    grep -v maxEstCorReads saturation_metrics.tmp | awk '{sum1+=$2;sum2+=$3;sum3+=$4;sum4+=$5;count+=1}END{OFS="\t";print $1, sum1, sum2/count, sum3, sum4/count}' >> saturation_metrics.txt
+
+    cat ~{sep=" " nameFiles} > "name.tmp"
+    head -n 1 name.tmp > name.txt
+    grep -v samples name.tmp | sort -u >> name.txt 
+  >>>
+
+  runtime {
+    memory:  "~{jobMemory} GB"
+    timeout: "~{timeout}"
+  }
+
+  output {
+    File coverageCounts = "coverage_counts.txt"
+    File enrichmentData = "enrichment_data.txt"
+    File saturationMetrics = "saturation_metrics.txt"
+    File nameFile = "name.txt"
+    File coverageWindows = "coverage_windows.txt"
+  }
+
+  meta {
+    output_meta: {
+      coverageCounts: "Text files with the coverage counts",
+      enrichmentData: "Text file with enrichment data",
+      saturationMetrics: "Text file with saturation metrics",
+      nameFile: "File that contains the sample name",
+      coverageWindows: "File that contains the coverage windows"
+    }
+  }
+}
+
 
 task extractMedipsCounts {
   input {
     File dedupBam
+    File dedupBai
     String reference
     File metricsDedup
     File summaryGcBiasMetrics
@@ -381,26 +560,33 @@ task extractMedipsCounts {
     Int window
     String basename =basename("~{dedupBam}", ".sorted.dedup.bam")
     String convert2bed = "$BEDOPS_ROOT/convert2bed"
+    String chromosome
+    String chromosomeLength
+    String medips_script
     Int threads = 8
     Int jobMemory = 32
     Int timeout = 6  
-    String modules = "rstats/3.5 cfmedips/1.5 bedops/2.4.37"
+    String modules = "rstats/3.5 cfmedips/1.5.1 bedops/2.4.37"
   }
+
   parameter_meta {
     dedupBam: "Dedup bam file"
+    dedupBai: "Dedup bam index file"
     metricsDedup: "Metrics of dedup bam file"
-    reference: "Reference module path"
+    reference: "Reference string id, such as hg38 or mm10"
     summaryGcBiasMetrics: "GC metrics summary"
     alignmentSummaryMetrics: "Alignment summary metrics"
     thaliaSummary: "Summary of the thalia data"
     window: "value of window"
     basename: "basename for the sample"
     convert2bed: "path to conver2bed program"
+    chromosome: "Chromosome to use with medips.R script"
+    chromosomeLength: "Length of the selected chromosome"
+    medips_script: "Path to the wrapper medips.R script"
     modules: "Modules needed to run alignment metrics"
     jobMemory: "Memory (GB) allocated for this job"
     threads: "Requested CPU threads"
     timeout: "Number of hours before task timeout"
-
   }
  
   command <<<
@@ -416,11 +602,15 @@ task extractMedipsCounts {
     fi
  
     set -euo pipefail
-      medips.R \
+      
+      samtools view -h ~{dedupBam} ~{chromosome}:1-~{chromosomeLength} -b > "~{chromosome}.dedup.bam"
+
+      $RSTATS_ROOT/bin/Rscript ~{medips_script} \
         --basedir . \
-        --bamfile ~{dedupBam} \
+        --bamfile "~{chromosome}.dedup.bam" \
         --samplename ~{basename} \
         --BSgenome $bsGenome \
+        --chromosome ~{chromosome} \
         --ws  ~{window}\
         --outdir .
       NAME=""
@@ -433,14 +623,16 @@ task extractMedipsCounts {
       echo -e "$NAME\t$count0\t$count1\t$count10\t$count50\t$count100" >> coverage_windows.txt
       echo -e "samples\n~{basename}" > name.txt
       ~{convert2bed} -d --input wig < medips.wig > medips.bed
-
+      rm ~{chromosome}.dedup.bam
   >>>
+
   runtime {
     modules: "~{modules}"
     memory:  "~{jobMemory} GB"
     cpu:     "~{threads}"
     timeout: "~{timeout}"
   } 
+
   output {
     File coverageCounts = "coverage_counts.txt"
     File enrichmentData = "enrichment_data.txt"
@@ -465,6 +657,8 @@ task extractMedipsCounts {
     }
   }
 }  
+
+
 task finalMetrics {
   input {
     File dedupBam
@@ -482,6 +676,7 @@ task finalMetrics {
     Int timeout = 6
     String modules = "cfmedips/1.5"
   }
+
   parameter_meta {
     dedupBam: "Dedup bam file"
     metricsDedup: "Metrics of dedup bam file"
@@ -498,6 +693,7 @@ task finalMetrics {
     threads: "Requested CPU threads"
     timeout: "Number of hours before task timeout"
   }  
+
   command <<<
     set -euo pipefail
     txt-to-json.py -n ~{nameFile} \
@@ -510,18 +706,21 @@ task finalMetrics {
                    -a ~{alignmentSummaryMetrics} \
                    -t ~{thaliaSummary}
   >>>
+
   runtime {
-  modules: "~{modules}"
-  memory:  "~{jobMemory} GB"
-  cpu:     "~{threads}"
-  timeout: "~{timeout}"
+    modules: "~{modules}"
+    memory:  "~{jobMemory} GB"
+    cpu:     "~{threads}"
+    timeout: "~{timeout}"
   }
-  output {
-    File qcMetrics = "qc_metrics.json"
-  } 
-  meta {
-    output_meta: {
-      qcMetrics: "File that combines all the metrics to be used"
-    }
-  }  
+  
+ output {
+   File qcMetrics = "qc_metrics.json"
+ } 
+ 
+ meta {
+   output_meta: {
+     qcMetrics: "File that combines all the metrics to be used"
+   }
+ }  
 }  
