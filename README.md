@@ -88,7 +88,7 @@ Parameter|Value|Default|Description
 `finalMetrics.threads`|Int|8|Requested CPU threads
 `finalMetrics.jobMemory`|Int|16|Memory (GB) allocated for this job
 `finalMetrics.timeout`|Int|6|Number of hours before task timeout
-`finalMetrics.modules`|String|"cfmedips/1.5"|Modules needed to run alignment metrics
+`finalMetrics.modules`|String|"cfmedips/1.5.1"|Modules needed to run alignment metrics
 
 
 ### Outputs
