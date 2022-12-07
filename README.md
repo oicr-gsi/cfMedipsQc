@@ -33,11 +33,10 @@ Parameter|Value|Description
 `fastq1`|File|Read 1 input fastq file
 `fastq2`|File|Read 2 input fastq file
 `referenceGenome`|String|reference genome to use
+`referenceGenomeIndex`|String|.fai file for the respective ref. genome fasta file
 `referenceModule`|String|module to load the reference genome
 `fastqFormat`|String|Quality encoding, default is phred33, but can be set to phred64
-`splitFaiToArray.refFai`|String|.fai file for the reference genome, we use it to extract chromosome ids
 `getChromosomeLength.modules`|String|Names and versions of modules to load
-`getChromosomeLength.refFai`|String|.fai file for the reference genome, we use it to extract chromosome ids
 `extractMedipsCounts.reference`|String|Reference string id, such as hg38 or mm10
 `extractMedipsCounts.medips_script`|String|Path to the wrapper medips.R script
 
@@ -82,7 +81,7 @@ Parameter|Value|Default|Description
 `extractMedipsCounts.threads`|Int|8|Requested CPU threads
 `extractMedipsCounts.jobMemory`|Int|32|Memory (GB) allocated for this job
 `extractMedipsCounts.timeout`|Int|6|Number of hours before task timeout
-`extractMedipsCounts.modules`|String|"rstats/3.5 cfmedips/1.5.1 bedops/2.4.37"|Modules needed to run alignment metrics
+`extractMedipsCounts.modules`|String|"samtools/1.9 rstats/3.5 cfmedips/1.5.1 bedops/2.4.37"|Modules needed to run alignment metrics
 `aggregateMetrics.jobMemory`|Int|1|Memory allocated for this job
 `aggregateMetrics.timeout`|Int|1|Hours before task timeout
 `finalMetrics.threads`|Int|8|Requested CPU threads
@@ -231,15 +230,26 @@ Output | Type | Description
   
      set -euo pipefail
        
-       samtools view -h ~{dedupBam} ~{chromosome}:1-~{chromosomeLength} -b > "~{chromosome}.dedup.bam"
+     samtools view -h ~{dedupBam} ~{chromosome}:1-~{chromosomeLength} -b > "~{chromosome}.dedup.bam"
+     READ_COUNT=$(samtools view ~{chromosome}.dedup.bam | wc -l)
  
-       $RSTATS_ROOT/bin/Rscript ~{medips_script} \
+     if [[ $READ_COUNT == 0 ]]; then
+       touch coverage_windows.txt
+       touch name.txt
+       touch coverage_counts.txt
+       touch enrichment_data.txt
+       touch genome_count.txt
+       touch MEDIPS_window_per_chr.csv
+       touch saturation_metrics.txt
+       touch medips.bed
+     else
+       Rscript MEDIPS_SCRIPT.R \
          --basedir . \
-         --bamfile "~{chromosome}.dedup.bam" \
-         --samplename ~{basename} \
-         --BSgenome $bsGenome \
-         --chromosome ~{chromosome} \
-         --ws  ~{window}\
+         --bamfile CHROM##.dedup.bam
+         --samplename BASENAME \
+         --BSgenome bsGenome \
+         --chromosome CHROM## \
+         --ws  WINDOW\
          --outdir .
        NAME=""
        count0=$(awk '$1 == 0' genome_count.txt | wc -l)

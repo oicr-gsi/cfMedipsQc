@@ -1,3 +1,5 @@
+# 1.1.1 - 2022-12-07
+[GDI-2555](https://jira.oicr.on.ca/browse/GDI-2555) : scattering by chromosome also brought in a possibility to encounter empty inputs in shards of extractMedipsCounts task. This is a fix to that.
 # 1.1.0 - 2022-11-20
 [GDI-2615](https://jira.oicr.on.ca/browse/GDI-2615) : scattering the task extractMedipsCounts by chromosome, updated default module for medips script. Additional tasks for handling splitted outputs
 # 1.0.7 - 2022-06-07

@@ -84,6 +84,7 @@ workflow cfMedipsQc {
     fastqFormat: "Quality encoding, default is phred33, but can be set to phred64"
     window:  "window length, over which to assess"
     referenceGenome: "reference genome to use"
+    referenceGenomeIndex: ".fai file for the respective ref. genome fasta file"
     referenceModule: "module to load the reference genome"
   }
 

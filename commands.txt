@@ -122,15 +122,26 @@ cfMedipsQC is designed to produce several QC metrics using samtools and picard. 
  
     set -euo pipefail
       
-      samtools view -h ~{dedupBam} ~{chromosome}:1-~{chromosomeLength} -b > "~{chromosome}.dedup.bam"
+    samtools view -h ~{dedupBam} ~{chromosome}:1-~{chromosomeLength} -b > "~{chromosome}.dedup.bam"
+    READ_COUNT=$(samtools view ~{chromosome}.dedup.bam | wc -l)
 
-      $RSTATS_ROOT/bin/Rscript ~{medips_script} \
+    if [[ $READ_COUNT == 0 ]]; then
+      touch coverage_windows.txt
+      touch name.txt
+      touch coverage_counts.txt
+      touch enrichment_data.txt
+      touch genome_count.txt
+      touch MEDIPS_window_per_chr.csv
+      touch saturation_metrics.txt
+      touch medips.bed
+    else
+      Rscript MEDIPS_SCRIPT.R \
         --basedir . \
-        --bamfile "~{chromosome}.dedup.bam" \
-        --samplename ~{basename} \
-        --BSgenome $bsGenome \
-        --chromosome ~{chromosome} \
-        --ws  ~{window}\
+        --bamfile CHROM##.dedup.bam
+        --samplename BASENAME \
+        --BSgenome bsGenome \
+        --chromosome CHROM## \
+        --ws  WINDOW\
         --outdir .
       NAME=""
       count0=$(awk '$1 == 0' genome_count.txt | wc -l)
@@ -142,6 +153,7 @@ cfMedipsQC is designed to produce several QC metrics using samtools and picard. 
       echo -e "$NAME\t$count0\t$count1\t$count10\t$count50\t$count100" >> coverage_windows.txt
       echo -e "samples\n~{basename}" > name.txt
       CONVERT2BED_EXECUTABLE -d --input wig < medips.wig > medips.bed
+    fi
 
 '''
 
