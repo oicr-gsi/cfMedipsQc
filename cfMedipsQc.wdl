@@ -84,6 +84,7 @@ workflow cfMedipsQc {
     fastqFormat: "Quality encoding, default is phred33, but can be set to phred64"
     window:  "window length, over which to assess"
     referenceGenome: "reference genome to use"
+    referenceGenomeIndex: ".fai file for the respective ref. genome fasta file"
     referenceModule: "module to load the reference genome"
   }
 
@@ -550,7 +551,11 @@ task aggregateMetrics {
   }
 }
 
-
+# ===================================================================================
+# This function is meant to be run using scatter. This part of the workflow is split
+# by chromosome to speed up things and lower the requirements for memory. Also, it
+# handles cases with unsufficient data. If there are no data, will return empty files
+# ===================================================================================
 task extractMedipsCounts {
   input {
     File dedupBam
@@ -605,16 +610,26 @@ task extractMedipsCounts {
     fi
  
     set -euo pipefail
-      
-      samtools view -h ~{dedupBam} ~{chromosome}:1-~{chromosomeLength} -b > "~{chromosome}.dedup.bam"
-
+    samtools view -h ~{dedupBam} ~{chromosome}:1-~{chromosomeLength} -b > "~{chromosome}.dedup.bam"
+    READ_COUNT=$(samtools view ~{chromosome}.dedup.bam | wc -l) 
+    
+    if [[ $READ_COUNT == 0 ]]; then
+      touch coverage_windows.txt
+      touch name.txt
+      touch coverage_counts.txt
+      touch enrichment_data.txt
+      touch genome_count.txt
+      touch MEDIPS_window_per_chr.csv
+      touch saturation_metrics.txt
+      touch medips.bed
+    else
       $RSTATS_ROOT/bin/Rscript ~{medips_script} \
         --basedir . \
         --bamfile "~{chromosome}.dedup.bam" \
         --samplename ~{basename} \
         --BSgenome $bsGenome \
         --chromosome ~{chromosome} \
-        --ws  ~{window}\
+        --ws ~{window}\
         --outdir .
       NAME=""
       count0=$(awk '$1 == 0' genome_count.txt | wc -l)
@@ -627,6 +642,7 @@ task extractMedipsCounts {
       echo -e "samples\n~{basename}" > name.txt
       ~{convert2bed} -d --input wig < medips.wig > medips.bed
       rm ~{chromosome}.dedup.bam
+    fi
   >>>
 
   runtime {
