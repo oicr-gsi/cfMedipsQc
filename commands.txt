@@ -125,7 +125,7 @@ cfMedipsQC is designed to produce several QC metrics using samtools and picard. 
     samtools view -h ~{dedupBam} ~{chromosome}:1-~{chromosomeLength} -b > "~{chromosome}.dedup.bam"
     READ_COUNT=$(samtools view ~{chromosome}.dedup.bam | wc -l)
 
-    if [[ $READ_COUNT == 0 ]]; then
+    if (( $READ_COUNT < MIN_COUNT ]]; then
       touch coverage_windows.txt
       touch name.txt
       touch coverage_counts.txt

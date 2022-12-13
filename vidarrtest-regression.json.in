@@ -21,6 +21,7 @@
             "cfMedipsQc.extractMedipsCounts.modules": "samtools/1.9 rstats/3.5 cfmedips/1.5.1 bedops/2.4.37",
             "cfMedipsQc.extractMedipsCounts.threads": null,
             "cfMedipsQc.extractMedipsCounts.timeout": null,
+            "cfMedipsQc.extractMedipsCounts.minCount": null,
             "cfMedipsQc.fastq1": {
                 "contents": {
                     "configuration": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/input_data/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R1_001.fastq.gz",
@@ -193,6 +194,7 @@
             "cfMedipsQc.extractMedipsCounts.modules": "samtools/1.9 rstats/3.5 cfmedips/1.5.1 bedops/2.4.37",
             "cfMedipsQc.extractMedipsCounts.threads": null,
             "cfMedipsQc.extractMedipsCounts.timeout": null,
+            "cfMedipsQc.extractMedipsCounts.minCount": null,
             "cfMedipsQc.fastq1": {
                 "contents": {
                     "configuration": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/input_data/SWID_15919826_AIX_0010_Ct_T_PE_160102_CM_AWA4285_7_200121_M00146_0152_000000000-D7Y75_ACTCTCGA-TGGTACAG_L001_R1_001.fastq.gz",

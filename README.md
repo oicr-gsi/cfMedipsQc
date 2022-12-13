@@ -81,6 +81,7 @@ Parameter|Value|Default|Description
 `extractMedipsCounts.threads`|Int|8|Requested CPU threads
 `extractMedipsCounts.jobMemory`|Int|32|Memory (GB) allocated for this job
 `extractMedipsCounts.timeout`|Int|6|Number of hours before task timeout
+`extractMedipsCounts.minCount`|Int|5|Minimal counts required to process a bam file
 `extractMedipsCounts.modules`|String|"samtools/1.9 rstats/3.5 cfmedips/1.5.1 bedops/2.4.37"|Modules needed to run alignment metrics
 `aggregateMetrics.jobMemory`|Int|1|Memory allocated for this job
 `aggregateMetrics.timeout`|Int|1|Hours before task timeout
@@ -233,7 +234,7 @@ Output | Type | Description
      samtools view -h ~{dedupBam} ~{chromosome}:1-~{chromosomeLength} -b > "~{chromosome}.dedup.bam"
      READ_COUNT=$(samtools view ~{chromosome}.dedup.bam | wc -l)
  
-     if [[ $READ_COUNT == 0 ]]; then
+     if (( $READ_COUNT < MIN_COUNT ]]; then
        touch coverage_windows.txt
        touch name.txt
        touch coverage_counts.txt
@@ -261,6 +262,7 @@ Output | Type | Description
        echo -e "$NAME\t$count0\t$count1\t$count10\t$count50\t$count100" >> coverage_windows.txt
        echo -e "samples\n~{basename}" > name.txt
        CONVERT2BED_EXECUTABLE -d --input wig < medips.wig > medips.bed
+     fi
  
 ```
  
