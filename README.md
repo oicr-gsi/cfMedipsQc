@@ -1,6 +1,6 @@
 # cfMedipsQc
 
-cfMedipsQC workflow produces a set of metrics files for sequencing data generated in methylation profiling of circulating Free DNA
+cfMedipsQC workflow produces a set of metrics files for sequencing data generated in methylation profiling of circulating Free DNA.
 
 
 ![cfMedipsQC flowchart](docs/cfMedipsQC.png)
@@ -17,8 +17,6 @@ cfMedipsQC workflow produces a set of metrics files for sequencing data generate
 * [bedops 2.4.37](https://github.com/bedops/bedops)
 * [bc 2.1.3](https://github.com/gavinhoward/bc/)
 
-
-## Usage
 
 ### Cromwell
 ```
@@ -234,7 +232,7 @@ Output | Type | Description
      samtools view -h ~{dedupBam} ~{chromosome}:1-~{chromosomeLength} -b > "~{chromosome}.dedup.bam"
      READ_COUNT=$(samtools view ~{chromosome}.dedup.bam | wc -l)
  
-     if (( $READ_COUNT < MIN_COUNT ]]; then
+     if (( $READ_COUNT < MIN_COUNT )); then
        touch coverage_windows.txt
        touch name.txt
        touch coverage_counts.txt
