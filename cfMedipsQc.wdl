@@ -573,7 +573,8 @@ task extractMedipsCounts {
     String medips_script
     Int threads = 8
     Int jobMemory = 32
-    Int timeout = 6  
+    Int timeout = 6 
+    Int minCount = 5 
     String modules = "samtools/1.9 rstats/3.5 cfmedips/1.5.1 bedops/2.4.37"
   }
 
@@ -595,6 +596,7 @@ task extractMedipsCounts {
     jobMemory: "Memory (GB) allocated for this job"
     threads: "Requested CPU threads"
     timeout: "Number of hours before task timeout"
+    minCount: "Minimal counts required to process a bam file"
   }
  
   command <<<
@@ -613,7 +615,7 @@ task extractMedipsCounts {
     samtools view -h ~{dedupBam} ~{chromosome}:1-~{chromosomeLength} -b > "~{chromosome}.dedup.bam"
     READ_COUNT=$(samtools view ~{chromosome}.dedup.bam | wc -l) 
     
-    if [[ $READ_COUNT == 0 ]]; then
+    if (( $READ_COUNT < ~{minCount} )); then
       touch coverage_windows.txt
       touch name.txt
       touch coverage_counts.txt
