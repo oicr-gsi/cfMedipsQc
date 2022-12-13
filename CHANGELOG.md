@@ -1,3 +1,5 @@
+# 1.1.2 - 2022-12-23
+[GDI-2555](https://jira.oicr.on.ca/browse/GDI-2555) : introduced a parameter to set a minimum threshold for reads in input bam files
 # 1.1.1 - 2022-12-07
 [GDI-2555](https://jira.oicr.on.ca/browse/GDI-2555) : scattering by chromosome also brought in a possibility to encounter empty inputs in shards of extractMedipsCounts task. This is a fix to that.
 # 1.1.0 - 2022-11-20
