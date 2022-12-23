@@ -1,3 +1,5 @@
+# 1.1.3 - 2022-12-22
+Patching aggregate function so it handle empty inputs
 # 1.1.2 - 2022-12-23
 [GDI-2555](https://jira.oicr.on.ca/browse/GDI-2555) : introduced a parameter to set a minimum threshold for reads in input bam files
 # 1.1.1 - 2022-12-07
