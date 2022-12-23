@@ -524,7 +524,7 @@ task aggregateMetrics {
 
     cat ~{sep=" " nameFiles} > "name.tmp"
     head -n 1 name.tmp > name.txt
-    grep -v samples name.tmp | sort -u >> name.txt 
+    grep -v samples name.tmp | sort -u >> name.txt
   >>>
 
   runtime {
@@ -616,13 +616,16 @@ task extractMedipsCounts {
     READ_COUNT=$(samtools view ~{chromosome}.dedup.bam | wc -l) 
     
     if (( $READ_COUNT < ~{minCount} )); then
-      touch coverage_windows.txt
-      touch name.txt
-      touch coverage_counts.txt
-      touch enrichment_data.txt
+      echo -e "sample\tcount0\tcount1\tcount10\tcount50\tcount100" > coverage_windows.txt
+      echo -e " \t0\t0\t0\t0\t$0" >> coverage_windows.txt
+      echo -e "\tnumberReadsCG\tnumberReadsWOCG" > coverage_counts.txt
+      echo -e "~{basename}\t0\t0" >> coverage_counts.txt
+      echo -e "genome\tregions.CG\tregions.C\tregions.G\tregions.relH\tregions.GoGe\tgenome.C\tgenome.G\tgenome.CG\tgenome.relH\tgenome.GoGe\tenrichment.score.relH\tenrichment.score.GoGe" > enrichment_data.txt
+      echo -e "~{basename}\t$bsGenome\t0\t0\t0\t0.0\t0.0\t0\t0\t0\t0.0\t0.0\t0.0\t0.0" >> enrichment_data.txt
       touch genome_count.txt
       touch MEDIPS_window_per_chr.csv
-      touch saturation_metrics.txt
+      echo -e "\tmaxEstCorReads\tmaxEstCor\tmaxTruCorReads\tmaxTruCor" > saturation_metrics.txt
+      echo -e "~{basename}\t0\t0.0\t0\t0.0" >> saturation_metrics.txt
       touch medips.bed
     else
       $RSTATS_ROOT/bin/Rscript ~{medips_script} \
@@ -641,10 +644,10 @@ task extractMedipsCounts {
       count100=$(awk '$1 >= 100' genome_count.txt | wc -l)
       echo -e "sample\tcount0\tcount1\tcount10\tcount50\tcount100" > coverage_windows.txt
       echo -e "$NAME\t$count0\t$count1\t$count10\t$count50\t$count100" >> coverage_windows.txt
-      echo -e "samples\n~{basename}" > name.txt
       ~{convert2bed} -d --input wig < medips.wig > medips.bed
       rm ~{chromosome}.dedup.bam
     fi
+    echo -e "samples\n~{basename}" > name.txt
   >>>
 
   runtime {
