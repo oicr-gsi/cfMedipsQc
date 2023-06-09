@@ -1,9 +1,11 @@
 # cfMedipsQc
 
-cfMedipsQC workflow produces a set of metrics files for sequencing data generated in methylation profiling of circulating Free DNA.
+cfMedipsQC workflow produces a set of metrics files for sequencing data generated in methylation profiling of circulating Free DNA
 
 
 ![cfMedipsQC flowchart](docs/cfMedipsQC.png)
+
+## Overview
 
 ## Dependencies
 
@@ -18,6 +20,8 @@ cfMedipsQC workflow produces a set of metrics files for sequencing data generate
 * [bc 2.1.3](https://github.com/gavinhoward/bc/)
 
 
+## Usage
+
 ### Cromwell
 ```
 java -jar cromwell.jar run cfMedipsQc.wdl --inputs inputs.json
@@ -30,12 +34,8 @@ Parameter|Value|Description
 ---|---|---
 `fastq1`|File|Read 1 input fastq file
 `fastq2`|File|Read 2 input fastq file
-`referenceGenome`|String|reference genome to use
-`referenceGenomeIndex`|String|.fai file for the respective ref. genome fasta file
-`referenceModule`|String|module to load the reference genome
+`reference`|String|reference id for using with the analysis
 `fastqFormat`|String|Quality encoding, default is phred33, but can be set to phred64
-`getChromosomeLength.modules`|String|Names and versions of modules to load
-`extractMedipsCounts.reference`|String|Reference string id, such as hg38 or mm10
 `extractMedipsCounts.medips_script`|String|Path to the wrapper medips.R script
 
 
