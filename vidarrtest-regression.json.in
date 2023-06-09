@@ -15,7 +15,7 @@
             "cfMedipsQc.alignmentMetrics.timeout": null,
             "cfMedipsQc.extractMedipsCounts.basename": null,
             "cfMedipsQc.extractMedipsCounts.medips_script": "$CFMEDIPS_ROOT/share/medips/medips.R",
-            "cfMedipsQc.extractMedipsCounts.reference": null",
+            "cfMedipsQc.extractMedipsCounts.reference": null,
             "cfMedipsQc.extractMedipsCounts.convert2bed": null,
             "cfMedipsQc.extractMedipsCounts.jobMemory": null,
             "cfMedipsQc.extractMedipsCounts.modules": "samtools/1.9 rstats/3.5 cfmedips/1.5.1 bedops/2.4.37",
