@@ -241,7 +241,7 @@
             "cfMedipsQc.trimming.modules": null,
             "cfMedipsQc.trimming.threads": null,
             "cfMedipsQc.trimming.timeout": null,
-            "cfMedipsQc.reference": null,
+            "cfMedipsQc.reference": "hg38",
             "cfMedipsQc.window": null
         },
         "description": "cfMedipsQc workflow test",
