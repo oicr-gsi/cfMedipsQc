@@ -1,3 +1,5 @@
+# 1.2.0 - 2022-06-10
+[GRD-635](https://jira.oicr.on.ca/browse/GRD-635) : moved assembly-specific choices into the workflow, updated README.md
 # 1.1.3 - 2022-12-22
 Patching aggregate function so it handle empty inputs
 # 1.1.2 - 2022-12-23

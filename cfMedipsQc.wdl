@@ -1,13 +1,35 @@
 version 1.0
+
+struct GenomeResources {
+    String referenceGenome
+    String referenceModule
+    String referenceGenomeIndex
+    String referenceId
+}
+
+
 workflow cfMedipsQc {
   input {
     File fastq1
     File fastq2
     Int window = 300
-    String referenceGenome
-    String referenceGenomeIndex
-    String referenceModule
+    String reference
     String fastqFormat
+  }
+
+  Map[String,GenomeResources] resources = {
+    "hg19": {
+      "referenceGenome": "$HG19_THALIANA_ROOT/hg19_thaliana_random.fa",
+      "referenceGenomeIndex": "$HG19_THALIANA_ROOT/hg19_thaliana_random.fa.fai",
+      "referenceModule": "hg19-thaliana/1.0",
+      "referenceId": "hg19"
+    },
+    "hg38": {
+      "referenceGenome": "$HG38_THALIANA_ROOT/hg38_thaliana_random.fa",
+      "referenceGenomeIndex": "$HG38_THALIANA_ROOT/hg38_thaliana_random.fa.fai",
+      "referenceModule": "hg38-thaliana/1.0",
+      "referenceId": "hg38" 
+    }
   }
   
   call trimming {
@@ -19,8 +41,8 @@ workflow cfMedipsQc {
   call alignment {
     input: fastq1Paired = trimming.outputFastq1Paired,
            fastq2Paired = trimming.outputFastq2Paired,
-           referenceGenome = referenceGenome,
-           referenceModule = referenceModule
+           referenceGenome = resources [ reference ].referenceGenome,
+           referenceModule = resources [ reference ].referenceModule
   }
 
   call preprocessing {
@@ -29,19 +51,20 @@ workflow cfMedipsQc {
 
   call alignmentMetrics {
     input: dedupBam = preprocessing.dedupBam,
-           referenceGenome = referenceGenome,
-           referenceModule = referenceModule
+           referenceGenome = resources [ reference ].referenceGenome,
+           referenceModule = resources [ reference ].referenceModule
   }
 
   call splitFaiToArray {
-    input: modules = referenceModule,
-           refFai = referenceGenomeIndex
+    input: modules = resources [ reference ].referenceModule,
+           refFai = resources [ reference ].referenceGenomeIndex
   }
   
   scatter(c in splitFaiToArray.out) {
     call getChromosomeLength {
       input: chromosome = c,
-             refFai = referenceGenomeIndex
+             modules = resources [ reference ].referenceModule,
+             refFai = resources [ reference ].referenceGenomeIndex
     }
 
     call extractMedipsCounts {
@@ -53,6 +76,7 @@ workflow cfMedipsQc {
              thaliaSummary = alignmentMetrics.thaliaSummary,
              chromosome = c,
              chromosomeLength = getChromosomeLength.length,
+             reference = resources [ reference ].referenceId,
              window = window
     }
   }
@@ -83,9 +107,7 @@ workflow cfMedipsQc {
     fastq2: "Read 2 input fastq file"
     fastqFormat: "Quality encoding, default is phred33, but can be set to phred64"
     window:  "window length, over which to assess"
-    referenceGenome: "reference genome to use"
-    referenceGenomeIndex: ".fai file for the respective ref. genome fasta file"
-    referenceModule: "module to load the reference genome"
+    reference: "reference id for using with the analysis"
   }
 
   meta {
