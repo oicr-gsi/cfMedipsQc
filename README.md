@@ -114,13 +114,13 @@ Output | Type | Description
  
  cfMedipsQC is designed to produce several QC metrics using samtools and picard. Runs it's own alignment with bowtie2
  
-###Calculate scaling coefficient for dynamic allocation of RAM
+### Calculate scaling coefficient for dynamic allocation of RAM
  
 ```
    grep -w ^~{chromosome} REF_FAI | cut -f 2 | awk '{print int(($1/~{LARGEST_CHR_BASES} + 0.1) * 10)'
 ```
  
-###Run read trimming with trimmomatic
+### Run read trimming with trimmomatic
  
 ```
     set -euo pipefail
