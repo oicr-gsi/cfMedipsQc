@@ -74,6 +74,8 @@ Parameter|Value|Default|Description
 `splitFaiToArray.timeout`|Int|1|Hours before task timeout
 `getChromosomeLength.memory`|Int|1|Memory allocated for this job
 `getChromosomeLength.timeout`|Int|1|Hours before task timeout
+`getChrCoefficient.memory`|Int|1|Memory allocated for this job
+`getChrCoefficient.timeout`|Int|1|Hours before task timeout
 `extractMedipsCounts.basename`|String|basename("~{dedupBam}",".sorted.dedup.bam")|basename for the sample
 `extractMedipsCounts.convert2bed`|String|"$BEDOPS_ROOT/convert2bed"|path to conver2bed program
 `extractMedipsCounts.threads`|Int|8|Requested CPU threads
@@ -112,14 +114,20 @@ Output | Type | Description
  
  cfMedipsQC is designed to produce several QC metrics using samtools and picard. Runs it's own alignment with bowtie2
  
+### Calculate scaling coefficient for dynamic allocation of RAM
+ 
+```
+   grep -w ^~{chromosome} REF_FAI | cut -f 2 | awk '{print int(($1/~{LARGEST_CHR_BASES} + 0.1) * 10)'
+```
+ 
 ### Run read trimming with trimmomatic
  
 ```
     set -euo pipefail
     trimmomatic PE  FASTQ_R1 FASTQ_R2 \
-                "-phred33 \  (can be set to phred64)
-                "FASTQ_R1_BASENAME.R1_paired.fastq.gz" "FASTQ_R1_BASENAME.R1_unpaired.fastq.gz" "FASTQ_R2_BASENAME.R2_paired.fastq.gz" "FASTQ_R2_BASENAME.R2_unpaired.fastq.gz" \
-                HEADCROP:5 (how many bases to crop, configurable)
+                    "-phred33 \  (can be set to phred64)
+                    "FASTQ_R1_BASENAME.R1_paired.fastq.gz" "FASTQ_R1_BASENAME.R1_unpaired.fastq.gz" "FASTQ_R2_BASENAME.R2_paired.fastq.gz" "FASTQ_R2_BASENAME.R2_unpaired.fastq.gz" \
+                    HEADCROP:5 (how many bases to crop, configurable)
 ```
  
 ### Align with Bowtie2

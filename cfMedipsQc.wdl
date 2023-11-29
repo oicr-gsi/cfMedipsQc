@@ -4,6 +4,7 @@ struct GenomeResources {
     String referenceGenome
     String referenceModule
     String referenceGenomeIndex
+    Int largest
     String referenceId
 }
 
@@ -22,12 +23,14 @@ workflow cfMedipsQc {
       "referenceGenome": "$HG19_THALIANA_ROOT/hg19_thaliana_random.fa",
       "referenceGenomeIndex": "$HG19_THALIANA_ROOT/hg19_thaliana_random.fa.fai",
       "referenceModule": "hg19-thaliana/1.0",
+      "largest": "249250621",
       "referenceId": "hg19"
     },
     "hg38": {
       "referenceGenome": "$HG38_THALIANA_ROOT/hg38_thaliana_random.fa",
       "referenceGenomeIndex": "$HG38_THALIANA_ROOT/hg38_thaliana_random.fa.fai",
       "referenceModule": "hg38-thaliana/1.0",
+      "largest": "248956422",
       "referenceId": "hg38" 
     }
   }
@@ -67,6 +70,13 @@ workflow cfMedipsQc {
              refFai = resources [ reference ].referenceGenomeIndex
     }
 
+    call getChrCoefficient {
+      input: modules = resources [ reference ].referenceModule,
+             refFai = resources [ reference ].referenceGenomeIndex,
+             largestChrom = resources [ reference ].largest,
+             chromosome = c
+    }
+
     call extractMedipsCounts {
       input: dedupBam = preprocessing.dedupBam,
              dedupBai = preprocessing.dedupBai, 
@@ -77,6 +87,7 @@ workflow cfMedipsQc {
              chromosome = c,
              chromosomeLength = getChromosomeLength.length,
              reference = resources [ reference ].referenceId,
+             scaleCoefficient = getChrCoefficient.coeff,
              window = window
     }
   }
@@ -179,6 +190,50 @@ workflow cfMedipsQc {
     File outputqcMetrics = finalMetrics.qcMetrics
     }
   }
+
+
+# ================================================================
+#  Scaling coefficient - use to scale RAM allocation by chromosome
+# ================================================================
+task getChrCoefficient {
+  input {
+    Int memory = 1
+    Int timeout = 1
+    Int largestChrom
+    String chromosome
+    String modules
+    String refFai
+  }
+
+  parameter_meta {
+    refFai: ".fai file for the reference genome, we use it to extract chromosome ids"
+    timeout: "Hours before task timeout"
+    chromosome: "Chromosome to check"
+    memory: "Memory allocated for this job"
+    modules: "Names and versions of modules to load"
+    largestChrom: "Length of the largest chromosome in a genome"
+  }
+
+  command <<<
+    grep -w ^~{chromosome} ~{refFai} | cut -f 2 | awk '{print int(($1/~{largestChrom} + 0.1) * 10)/10}'
+  >>>
+
+  runtime {
+    memory:  "~{memory} GB"
+    modules: "~{modules}"
+    timeout: "~{timeout}"
+  }
+
+  output {
+    String coeff = read_string(stdout())
+  }
+
+  meta {
+    output_meta: {
+      coeff: "Length ratio as relative to the largest chromosome."
+    }
+  }
+}
 
 
 task trimming {
@@ -593,6 +648,7 @@ task extractMedipsCounts {
     String chromosome
     String chromosomeLength
     String medips_script
+    Float scaleCoefficient
     Int threads = 8
     Int jobMemory = 32
     Int timeout = 6 
@@ -616,6 +672,7 @@ task extractMedipsCounts {
     medips_script: "Path to the wrapper medips.R script"
     modules: "Modules needed to run alignment metrics"
     jobMemory: "Memory (GB) allocated for this job"
+    scaleCoefficient: "Scaling coefficient for RAM allocation, depends on chromosome size"
     threads: "Requested CPU threads"
     timeout: "Number of hours before task timeout"
     minCount: "Minimal counts required to process a bam file"
@@ -674,7 +731,7 @@ task extractMedipsCounts {
 
   runtime {
     modules: "~{modules}"
-    memory:  "~{jobMemory} GB"
+    memory:  "~{round(jobMemory * scaleCoefficient)} GB"
     cpu:     "~{threads}"
     timeout: "~{timeout}"
   } 
