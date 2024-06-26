@@ -93,18 +93,18 @@ Parameter|Value|Default|Description
 
 ### Outputs
 
-Output | Type | Description
----|---|---
-`outputAlignmentSummaryMetrics`|File|Metric for alignments
-`outputBaseDistributionMetrics`|File|Metrics for base distributions
-`outputInsertSizeMetrics`|File?|Metrics for insert size (Optional, when enough data are available)
-`outputQualityByCycleMetrics`|File|Quality by cycle metrics
-`outputQualityDistributionMetrics`|File|Quality distribution metrics
-`outputGcBiasMetrics`|File|gc bias metrics
-`outputSummaryGcBiasMetrics`|File|Summary of gc bias metrics
-`outputThaliaSummary`|File|Summary of thalia chromosomes
-`outputDedupBam`|File|De-duplicated bam file
-`outputqcMetrics`|File|Final output
+Output | Type | Description | Labels
+---|---|---|---
+`outputAlignmentSummaryMetrics`|File|Metric for alignments|vidarr_label: outputAlignmentSummaryMetrics
+`outputBaseDistributionMetrics`|File|Metrics for base distributions|vidarr_label: outputBaseDistributionMetrics
+`outputInsertSizeMetrics`|File?|Metrics for insert size (Optional, when enough data are available)|vidarr_label: outputInsertSizeMetrics
+`outputQualityByCycleMetrics`|File|Quality by cycle metrics|vidarr_label: outputQualityByCycleMetrics
+`outputQualityDistributionMetrics`|File|Quality distribution metrics|vidarr_label: outputQualityDistributionMetrics
+`outputGcBiasMetrics`|File|gc bias metrics|vidarr_label: outputGcBiasMetrics
+`outputSummaryGcBiasMetrics`|File|Summary of gc bias metrics|
+`outputThaliaSummary`|File|Summary of thalia chromosomes|vidarr_label: outputThaliaSummary
+`outputDedupBam`|File|De-duplicated bam file|vidarr_label: outputDedupBam
+`outputqcMetrics`|File|Final output|vidarr_label: outputqcMetrics
 
 
 ## Commands
