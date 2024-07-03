@@ -165,17 +165,47 @@ workflow cfMedipsQc {
       }
     ]   
     output_meta: {
-       outputAlignmentSummaryMetrics: "Metric for alignments",
-       outputBaseDistributionMetrics: "Metrics for base distributions",
-       outputInsertSizeMetrics: "Metrics for insert size (Optional, when enough data are available)",
-       outputQualityByCycleMetrics: "Quality by cycle metrics",
-       outputQualityDistributionMetrics: "Quality distribution metrics",
-       outputGcBiasMetrics: "gc bias metrics",
-       outputSummaryGcBiasMetric: "Summary of gc bias metrics",
-       outputThaliaSummary: "Summary of thalia chromosomes",
-       outputDedupBam: "De-duplicated bam file",
-       outputqcMetrics: "Final output"
+    outputAlignmentSummaryMetrics: {
+        description: "Metric for alignments",
+        vidarr_label: "outputAlignmentSummaryMetrics"
+    },
+    outputBaseDistributionMetrics: {
+        description: "Metrics for base distributions",
+        vidarr_label: "outputBaseDistributionMetrics"
+    },
+    outputInsertSizeMetrics: {
+        description: "Metrics for insert size (Optional, when enough data are available)",
+        vidarr_label: "outputInsertSizeMetrics"
+    },
+    outputQualityByCycleMetrics: {
+        description: "Quality by cycle metrics",
+        vidarr_label: "outputQualityByCycleMetrics"
+    },
+    outputQualityDistributionMetrics: {
+        description: "Quality distribution metrics",
+        vidarr_label: "outputQualityDistributionMetrics"
+    },
+    outputGcBiasMetrics: {
+        description: "gc bias metrics",
+        vidarr_label: "outputGcBiasMetrics"
+    },
+    outputSummaryGcBiasMetric: {
+        description: "Summary of gc bias metrics",
+        vidarr_label: "outputSummaryGcBiasMetric"
+    },
+    outputThaliaSummary: {
+        description: "Summary of thalia chromosomes",
+        vidarr_label: "outputThaliaSummary"
+    },
+    outputDedupBam: {
+        description: "De-duplicated bam file",
+        vidarr_label: "outputDedupBam"
+    },
+    outputqcMetrics: {
+        description: "Final output",
+        vidarr_label: "outputqcMetrics"
     }
+}
   }
   output {
     File outputAlignmentSummaryMetrics = alignmentMetrics.alignmentSummaryMetrics 
