@@ -26,7 +26,7 @@
             "cfMedipsQc.extractMedipsCounts.minCount": null,
             "cfMedipsQc.fastq1": {
                 "contents": {
-                    "configuration": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/input_data/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R1_001.fastq.gz",
+                    "configuration": "/.mounts/labs/gsi/testdata/cfMedipsQc/test_inputs/Test01_R1.fastq.gz",
                     "externalIds": [
                         {
                             "id": "TEST",
@@ -38,7 +38,7 @@
             },
             "cfMedipsQc.fastq2": {
                 "contents": {
-                    "configuration": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/input_data/AWA4285_4-IP_200121_M00146_0152_000000000-D7Y75_CTGATCGT-ATATGCGC_L001_R2_001.fastq.gz",
+                    "configuration": "/.mounts/labs/gsi/testdata/cfMedipsQc/test_inputs/Test01_R2.fastq.gz",
                     "externalIds": [
                         {
                             "id": "TEST",
@@ -167,7 +167,7 @@
             {
                 "metrics_calculate": "@CHECKOUT@/tests/calculate.sh",
                 "metrics_compare": "@CHECKOUT@/tests/compare.sh",
-                "output_metrics": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/output_metrics/cfMedipsQc_dataset1.metrics",
+                "output_metrics": "/.mounts/labs/gsi/testdata/cfMedipsQc/output_metrics/workflow_test_01.metrics",
                 "type": "script"
             }
         ]
@@ -199,7 +199,7 @@
             "cfMedipsQc.extractMedipsCounts.minCount": null,
             "cfMedipsQc.fastq1": {
                 "contents": {
-                    "configuration": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/input_data/SWID_15919826_AIX_0010_Ct_T_PE_160102_CM_AWA4285_7_200121_M00146_0152_000000000-D7Y75_ACTCTCGA-TGGTACAG_L001_R1_001.fastq.gz",
+                    "configuration": "/.mounts/labs/gsi/testdata/cfMedipsQc/test_inputs/Test02_R1.fastq.gz",
                     "externalIds": [
                         {
                             "id": "TEST",
@@ -211,7 +211,7 @@
             },
             "cfMedipsQc.fastq2": {
                 "contents": {
-                    "configuration": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/input_data/SWID_15919826_AIX_0010_Ct_T_PE_160102_CM_AWA4285_7_200121_M00146_0152_000000000-D7Y75_ACTCTCGA-TGGTACAG_L001_R2_001.fastq.gz",
+                    "configuration": "/.mounts/labs/gsi/testdata/cfMedipsQc/test_inputs/Test02_R2.fastq.gz",
                     "externalIds": [
                         {
                             "id": "TEST",
@@ -340,7 +340,7 @@
             {
                 "metrics_calculate": "@CHECKOUT@/tests/calculate.sh",
                 "metrics_compare": "@CHECKOUT@/tests/compare.sh",
-                "output_metrics": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/output_metrics/cfMedipsQc_setsize.metrics",
+                "output_metrics": "/.mounts/labs/gsi/testdata/cfMedipsQc/output_metrics/workflow_test_02.metrics",
                 "type": "script"
             }
         ]
