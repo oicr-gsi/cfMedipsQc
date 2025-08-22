@@ -167,7 +167,7 @@
             {
                 "metrics_calculate": "@CHECKOUT@/tests/calculate.sh",
                 "metrics_compare": "@CHECKOUT@/tests/compare.sh",
-                "output_metrics": "/.mounts/labs/gsi/testdata/cfMedipsQc/output_metrics/workflow_test_01.metrics",
+                "output_metrics": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/output_metrics/workflow_test_01.metrics",
                 "type": "script"
             }
         ]
@@ -340,7 +340,7 @@
             {
                 "metrics_calculate": "@CHECKOUT@/tests/calculate.sh",
                 "metrics_compare": "@CHECKOUT@/tests/compare.sh",
-                "output_metrics": "/.mounts/labs/gsi/testdata/cfMedipsQc/output_metrics/workflow_test_02.metrics",
+                "output_metrics": "/.mounts/labs/gsi/testdata/cfMedipsQc/1.0.0/output_metrics/workflow_test_02.metrics",
                 "type": "script"
             }
         ]
