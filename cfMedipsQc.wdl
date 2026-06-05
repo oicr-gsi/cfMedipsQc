@@ -32,6 +32,13 @@ workflow cfMedipsQc {
       "referenceModule": "hg38-thaliana/1.0",
       "largest": "248956422",
       "referenceId": "hg38" 
+    },
+    "hg38_noAlt": {
+      "referenceGenome": "$HG38_NOALT_THALIANA_ROOT/hg38_noAlt_thaliana.fa",
+      "referenceGenomeIndex": "$HG38_NOALT_THALIANA_ROOT/hg38_noAlt_thaliana.fa.fai",
+      "referenceModule": "hg38-noalt-thaliana/1.0",
+      "largest": "248956422",
+      "referenceId": "hg38"
     }
   }
   
